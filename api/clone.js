@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         // 3. 일레븐랩스 목소리 ID 세팅
         // (일단 통신 테스트를 위해 일레븐랩스 기본 영어/한국어 지원 목소리 ID를 넣었습니다.
         // 나중에 형님이 엄마 목소리 복제본을 만들면 그 ID로 여기만 쏙 갈아끼우면 됩니다!)
-        const voiceId = "pNInz6obbfdqIe1btQcb"; 
+        const voiceId = "0oqpliV6dVSr9XomngOW"; 
         
         // 4. 일레븐랩스 서버에 "이 대사를 이 목소리로 읽어서 MP3로 줘!" 라고 요청
         const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
