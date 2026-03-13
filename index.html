@@ -96,9 +96,8 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // 1. 탭 전환 로직
+        // 1. 탭 전환 로직 (기존과 동일)
         function switchTab(tabId) {
-            // 모든 탭과 콘텐츠 비활성화
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
             
@@ -109,38 +108,30 @@
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('ai-mode').classList.add('active');
                 
-                // 엄마 목소리 탭으로 넘어가면 재생 중이던 음악 정지
                 const player = document.getElementById('audio-player');
                 player.pause();
                 resetPlayButtons();
             }
         }
 
-        // 2. 오디오 재생 및 정지 로직
+        // 2. 오디오 재생 및 정지 로직 (기존과 동일)
         let currentBtn = null;
         function togglePlay(btn, src) {
             const player = document.getElementById('audio-player');
-            
-            // 재생 중인 버튼을 다시 누르면 일시정지
             if (currentBtn === btn && !player.paused) {
                 player.pause();
                 btn.innerText = '▶';
                 btn.style.background = '#00b894';
                 return;
             }
-
-            // 다른 곡을 누르면 기존 버튼들 초기화
             resetPlayButtons();
-            
-            // 새 곡 재생
             player.src = src;
             player.play();
             btn.innerText = '⏸';
-            btn.style.background = '#d63031'; // 일시정지 상태일 때 빨간색으로 변경
+            btn.style.background = '#d63031';
             currentBtn = btn;
         }
 
-        // 모든 재생 버튼을 원래 상태(▶)로 되돌리는 함수
         function resetPlayButtons() {
             document.querySelectorAll('.play-btn').forEach(b => {
                 b.innerText = '▶';
@@ -148,20 +139,46 @@
             });
         }
 
-        // 3. AI 녹음 버튼 시뮬레이션 로직
-        function handleRecord() {
+        // 3. 🔥 대망의 진짜 AI 통신 로직!
+        async function handleRecord() {
             const btn = document.getElementById('recordBtn');
             const status = document.getElementById('status-text');
+            const player = document.getElementById('audio-player');
             
-            if (btn.innerText === "엄마 목소리 10초 녹음하기") {
-                btn.innerText = "🛑 녹음 완료 및 자장가 만들기";
-                btn.style.background = "#d63031";
-                status.innerText = "🔴 엄마의 따뜻한 목소리를 듣고 있어요...";
-            } else {
+            // 버튼 상태를 로딩 중으로 변경
+            btn.innerText = "⏳ AI가 자장가 만드는 중...";
+            btn.style.background = "#d63031";
+            btn.disabled = true; // 통신 중에 여러 번 눌리지 않게 막기
+            status.innerText = "서버랑 통신 중입니다. (약 5~10초 소요)";
+
+            try {
+                // 아까 만든 api/clone.js 로 호출을 날림!
+                const response = await fetch('/api/clone', { method: 'POST' });
+
+                if (!response.ok) {
+                    throw new Error('API 통신 에러');
+                }
+
+                // 성공적으로 받아온 오디오 파일을 재생 준비
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                // 오디오 재생!
+                player.src = audioUrl;
+                player.play();
+
+                // 화면 상태 업데이트
+                btn.innerText = "🎵 재생 중 (다시 만들기)";
+                btn.style.background = "#00b894";
+                status.innerText = "✨ AI 자장가 완성! 잘 들리시나요?";
+                
+            } catch (error) {
+                console.error(error);
                 btn.innerText = "엄마 목소리 10초 녹음하기";
                 btn.style.background = "#ff7675";
-                status.innerText = "✨ 엄마표 AI 자장가 생성 완료! (테스트 모드)";
-                // 향후 이곳에 실제 AI API 연동 코드가 들어갈 자리입니다.
+                status.innerText = "❌ 에러가 났습니다. Vercel 세팅이나 코드를 확인해주세요.";
+            } finally {
+                btn.disabled = false; // 버튼 다시 누를 수 있게 풀기
             }
         }
     </script>
