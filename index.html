@@ -33,6 +33,10 @@
         .record-btn { background: #ff7675; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; width: 90%; box-shadow: 0 6px 15px rgba(255, 118, 117, 0.4); transition: 0.3s; }
         .record-btn:active { transform: scale(0.98); }
         .premium-badge { background: #ffeaa7; color: #d63031; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 900; vertical-align: middle; margin-left: 8px; letter-spacing: 1px;}
+        
+        /* 🔥 새로 추가된 정지 버튼 스타일 */
+        .stop-btn { background: #636e72; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; width: 90%; box-shadow: 0 6px 15px rgba(99, 110, 114, 0.4); transition: 0.3s; display: none; }
+        .stop-btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -85,6 +89,8 @@
             
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 10초 녹음하기</button>
             
+            <button class="stop-btn" id="stopBtn" onclick="stopAIAudio()">⏹ 자장가 끄기</button>
+            
             <div style="background: #f1f2f6; padding: 15px; border-radius: 12px; margin-top: 30px; text-align: left;">
                 <p style="margin: 0; font-size: 0.85rem; color: #636e72;">💡 <strong>사용 팁:</strong> "우리아기 예쁜아기~" 처럼 평소 아이를 달랠 때 쓰는 따뜻한 톤으로 10초간 말해주세요.</p>
             </div>
@@ -108,6 +114,11 @@
             document.getElementById('ai-mode').classList.add('active');
             document.getElementById('audio-player').pause();
             resetPlayButtons();
+            
+            // 탭 옮기면 정지 버튼도 숨기기
+            if(document.getElementById('stopBtn')) {
+                document.getElementById('stopBtn').style.display = 'none';
+            }
         }
     }
 
@@ -131,12 +142,21 @@
         document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; b.style.background = '#00b894'; });
     }
 
-    // 2. 🔥 진짜 녹음 및 실시간 AI 복제 기능
+    // 🔥 정지 버튼을 누르면 작동하는 함수
+    function stopAIAudio() {
+        const player = document.getElementById('audio-player');
+        player.pause();
+        document.getElementById('stopBtn').style.display = 'none'; // 버튼 다시 숨기기
+        document.getElementById('status-text').innerText = "자장가 재생이 중지되었습니다. 🌙";
+    }
+
+    // 2. 진짜 녹음 및 실시간 AI 복제 기능
     let mediaRecorder;
     let audioChunks = [];
 
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopBtn');
         const status = document.getElementById('status-text');
         const player = document.getElementById('audio-player');
 
@@ -145,6 +165,9 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
+
+                // 녹음 시작하면 기존 정지 버튼 숨기기
+                stopBtn.style.display = 'none';
 
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 mediaRecorder.onstop = async () => {
@@ -161,8 +184,12 @@
                         const resBlob = await response.blob();
                         player.src = URL.createObjectURL(resBlob);
                         player.play();
+                        
                         btn.innerText = "엄마 목소리 다시 녹음하기";
-                        status.innerText = "✨ 자장가 완성! 엄마 목소리가 나오나요?";
+                        status.innerText = "✨ 자장가 완성! 무한 반복 재생 중입니다.";
+                        
+                        // 🔥 노래가 나오기 시작하면 '정지 버튼' 짠 하고 나타남
+                        stopBtn.style.display = 'inline-block';
                     } else {
                         status.innerText = "❌ 실패! ElevenLabs 크레딧이나 설정을 확인하세요.";
                     }
