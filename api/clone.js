@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     console.log(`✅ [1단계 성공] 목소리 복제 완료! 새 ID: ${newVoiceId}`);
     console.log("🚀 [2단계] 방금 만든 내 목소리로 자장가 생성 시작...");
 
-    // 3. 방금 막 생성된 따끈따끈한 내 목소리 ID로 자장가 대사 읽기
+    // 3. 방금 막 생성된 따끈따끈한 내 목소리 ID로 자장가 대사 읽기 (속도 늦추기 세팅 추가)
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${newVoiceId}`, {
       method: 'POST',
       headers: {
@@ -45,8 +45,16 @@ export default async function handler(req, res) {
         'Accept': 'audio/mpeg'
       },
       body: JSON.stringify({
-        text: "우리 아기... 예쁜 아기... 엄마가 항상 지켜줄게... 자장... 자장... 우리 아기... 코~ 자자...",
-        model_id: "eleven_multilingual_v2"
+        // 🔥 엔터키(\n\n)를 팍팍 넣어서 강제로 숨을 길게 쉬게 만듭니다.
+        text: "우리 아기... \n\n 예쁜 아기... \n\n 엄마가 항상 지켜줄게... \n\n 자장... 자장... \n\n 우리 아기... \n\n 코~ 자자...",
+        model_id: "eleven_multilingual_v2",
+        // 🔥 AI가 흥분하지 않고 차분하게 말하도록 안정제 세팅을 추가했습니다.
+        voice_settings: { 
+          stability: 0.8,         // 톤을 차분하고 일정하게 유지
+          similarity_boost: 0.5,  // 원본 목소리와의 유사도
+          style: 0.0,             // 과장된 억양 방지
+          use_speaker_boost: true
+        }
       })
     });
 
