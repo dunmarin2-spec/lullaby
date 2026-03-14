@@ -3,100 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>엄마 품 자장가</title>
+    <title>엄마 품 자장가 - Global Premium</title>
     <style>
-        body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; background: white; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
-        header { padding: 25px 20px; text-align: center; background: #6c5ce7; color: white; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
-        h1 { margin: 0; font-size: 1.6rem; font-weight: 800; }
+        /* 프리미엄 야간 모드 테마 */
+        :root { --primary: #6c5ce7; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ff7675; }
         
-        .tabs { display: flex; margin: 20px; background: #f1f2f6; border-radius: 30px; overflow: hidden; }
-        .tab-btn { flex: 1; padding: 14px; border: none; background: none; font-size: 1rem; cursor: pointer; transition: 0.3s; color: #a4b0be; font-weight: bold; }
-        .tab-btn.active { background: #6c5ce7; color: white; border-radius: 30px; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
+        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; }
         
-        .content-section { display: none; padding: 10px 20px 30px 20px; }
+        /* 🌍 언어 선택기 */
+        .lang-selector { display: flex; justify-content: flex-end; padding: 15px 20px 0; gap: 8px; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #64748b; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.3s; }
+        .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        header { padding: 30px 20px; text-align: center; }
+        h1 { margin: 0; font-size: 1.8rem; font-weight: 800; color: #a29bfe; letter-spacing: -1px; }
+        header p { color: #94a3b8; margin-top: 10px; font-size: 0.9rem; }
+
+        .tabs { display: flex; margin: 0 20px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 5px; }
+        .tab-btn { flex: 1; padding: 14px; border: none; background: none; color: #64748b; cursor: pointer; transition: 0.3s; font-weight: bold; border-radius: 15px; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4); }
+
+        .content-section { display: none; padding: 0 20px 40px; }
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .track-card { background: #ffffff; padding: 18px; border-radius: 16px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f2f6; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .track-info h3 { margin: 0 0 6px 0; font-size: 1.1rem; color: #2d3436; }
-        .track-info p { margin: 0; font-size: 0.85rem; color: #636e72; }
-        .play-btn { background: #00b894; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3); transition: 0.2s; }
-        .play-btn:active { transform: scale(0.95); }
 
-        .ai-section { text-align: center; padding-top: 30px; }
-        .record-btn { background: #ff7675; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; width: 90%; box-shadow: 0 6px 15px rgba(255, 118, 117, 0.4); transition: 0.3s; }
-        .record-btn:active { transform: scale(0.98); }
-        .premium-badge { background: #ffeaa7; color: #d63031; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 900; vertical-align: middle; margin-left: 8px; letter-spacing: 1px;}
+        .track-card { background: var(--card); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .track-info h3 { margin: 0 0 6px 0; font-size: 1.1rem; color: #e2e8f0; }
+        .track-info p { margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4; }
+        .play-btn { background: #00b894; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+
+        .premium-panel { background: var(--card); padding: 22px; border-radius: 24px; margin-top: 20px; border: 1px solid rgba(108, 92, 231, 0.2); }
+        .panel-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 18px; color: #a29bfe; display: flex; align-items: center; gap: 8px; }
         
-        .stop-btn { background: #636e72; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; width: 90%; box-shadow: 0 6px 15px rgba(99, 110, 114, 0.4); transition: 0.3s; display: none; }
-        .stop-btn:active { transform: scale(0.98); }
+        .slider-group { margin-bottom: 18px; }
+        .slider-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; }
+        input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+
+        .timer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
+
+        .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); transition: 0.3s; }
+        .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 12px; cursor: pointer; display: none; font-weight: bold; }
+        
+        #status-text { margin-top: 25px; font-size: 1rem; color: #a29bfe; text-align: center; }
     </style>
 </head>
 <body>
     <div class="app-container">
+        <div class="lang-selector">
+            <button class="lang-btn active" onclick="changeLang('ko', this)">KO</button>
+            <button class="lang-btn" onclick="changeLang('en', this)">EN</button>
+            <button class="lang-btn" onclick="changeLang('tr', this)">TR</button>
+        </div>
+
         <header>
-            <h1>🌙 자장자장 자장가</h1>
-            <p style="margin: 8px 0 0 0; font-size: 0.95rem; opacity: 0.9;">우리 아이 통잠 프로젝트</p>
+            <h1 id="main-title">🌙 엄마 품 자장가</h1>
+            <p id="sub-title">오늘도 우리 아이, 꿀잠 잘 시간</p>
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('basic')">🎵 기본 모드</button>
-            <button class="tab-btn" onclick="switchTab('ai')">👩‍👧 엄마 목소리</button>
+            <button class="tab-btn active" id="tab-1" onclick="switchTab('basic')">🎵 테마 음악</button>
+            <button class="tab-btn" id="tab-2" onclick="switchTab('ai')">🎙️ 목소리 복제</button>
         </div>
 
         <div id="basic-mode" class="content-section active">
-            <h2 style="font-size: 1.2rem; margin-bottom: 20px; color: #2d3436;">추천 수면 음악</h2>
-            
             <div class="track-card">
-                <div class="track-info">
-                    <h3>따뜻한 별빛 오르골</h3>
-                    <p>마음을 진정시키는 잔잔한 멜로디</p>
-                </div>
+                <div class="track-info"><h3 id="bgm1-t">따뜻한 별빛 오르골</h3><p id="bgm1-d">마음을 진정시키는 잔잔한 멜로디</p></div>
                 <button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button>
             </div>
-            
             <div class="track-card">
-                <div class="track-info">
-                    <h3>태엽 인형의 꿈</h3>
-                    <p>포근한 안도감을 주는 맑은 오르골 소리</p>
-                </div>
+                <div class="track-info"><h3 id="bgm2-t">태엽 인형의 꿈</h3><p id="bgm2-d">포근한 안도감을 주는 맑은 오르골</p></div>
                 <button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button>
             </div>
-            
             <div class="track-card">
-                <div class="track-info">
-                    <h3>어쿠스틱 숲속 산책</h3>
-                    <p>포근한 기타 선율과 함께하는 숲속 요정들의 자장가</p>
-                </div>
+                <div class="track-info"><h3 id="bgm3-t">어쿠스틱 숲속 산책</h3><p id="bgm3-d">기타 선율과 함께하는 요정들의 자장가</p></div>
                 <button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button>
             </div>
-
             <div class="track-card">
-                <div class="track-info">
-                    <h3>반짝반짝 별빛 꿈결</h3>
-                    <p>밤하늘의 별가루가 내려앉는 듯한 영롱하고 신비로운 멜로디</p>
-                </div>
+                <div class="track-info"><h3 id="bgm4-t">반짝반짝 별빛 꿈결</h3><p id="bgm4-d">영롱하고 신비로운 멜로디</p></div>
                 <button class="play-btn" onclick="togglePlay(this, 'bgm4.mp3')">▶</button>
             </div>
         </div>
 
-        <div id="ai-mode" class="content-section ai-section">
-            <h2 style="margin-bottom: 10px; color: #2d3436;">세상에 하나뿐인 자장가 <span class="premium-badge">PRO</span></h2>
-            <p style="color: #636e72; margin-bottom: 35px; line-height: 1.6; font-size: 0.95rem;">
-                기본 모드에서 선택한 음악 위에<br>엄마의 다정한 목소리를 얹어주세요.
-            </p>
-            
-            <div style="font-size: 4rem; margin-bottom: 15px;">🎙️</div>
-            
-            <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 10초 녹음하기</button>
+        <div id="ai-mode" class="content-section ai-section" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🌌</div>
+            <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
             <button class="stop-btn" id="stopBtn" onclick="stopBothAudios()">⏹ 자장가 끄기</button>
             
-            <div style="background: #f1f2f6; padding: 15px; border-radius: 12px; margin-top: 30px; text-align: left;">
-                <p style="margin: 0; font-size: 0.85rem; color: #636e72;">💡 <strong>사용 팁:</strong> 기본 모드에서 원하는 배경음악을 먼저 들어보고 고르신 후, 엄마 목소리를 녹음해 보세요!</p>
+            <div class="premium-panel" style="text-align: left;">
+                <div class="panel-title" id="mixer-title">🎚️ 실시간 볼륨 믹서</div>
+                <div class="slider-group">
+                    <label id="vol-bgm-label">배경 음악 볼륨 (BGM)</label>
+                    <input type="range" id="bgmVol" min="0" max="1" step="0.1" value="0.2" oninput="updateVolume()">
+                </div>
+                <div class="slider-group">
+                    <label id="vol-voice-label">엄마 목소리 볼륨 (Voice)</label>
+                    <input type="range" id="voiceVol" min="0" max="1" step="0.1" value="1.0" oninput="updateVolume()">
+                </div>
             </div>
-            
-            <p id="status-text" style="margin-top: 25px; font-weight: bold; color: #6c5ce7; font-size: 1.1rem;"></p>
+
+            <div class="premium-panel" style="text-align: left;">
+                <div class="panel-title" id="timer-title">⏲️ 취침 타이머</div>
+                <div class="timer-grid">
+                    <button class="timer-btn" id="t-10" onclick="setTimer(10, this)">10분</button>
+                    <button class="timer-btn" id="t-30" onclick="setTimer(30, this)">30분</button>
+                    <button class="timer-btn" id="t-60" onclick="setTimer(60, this)">60분</button>
+                </div>
+                <p id="timer-display" style="font-size: 0.8rem; color: #ff7675; margin-top: 12px; min-height: 1rem; text-align: center;"></p>
+            </div>
+
+            <p id="status-text"></p>
         </div>
     </div>
 
@@ -104,10 +122,76 @@
     <audio id="voice-player" loop></audio>
 
 <script>
-    // 🔥 기본값: 아무것도 안 고르면 1번 음악(bgm1.mp3)이 깔리도록 설정
-    let selectedBgmSrc = 'bgm1.mp3';
+    // 🌍 다국어 데이터
+    const langData = {
+        ko: {
+            title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
+            tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
+            bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
+            bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
+            bgm3t: "어쿠스틱 숲속 산책", bgm3d: "기타 선율과 함께하는 요정들의 자장가",
+            bgm4t: "반짝반짝 별빛 꿈결", bgm4d: "영롱하고 신비로운 멜로디",
+            record: "엄마 목소리 녹음하기 (10초)", stop: "⏹ 자장가 끄기",
+            mixer: "🎚️ 실시간 볼륨 믹서", vbgm: "배경 음악 볼륨 (BGM)", vvoice: "엄마 목소리 볼륨 (Voice)",
+            timer: "⏲️ 취침 타이머", t10: "10분", t30: "30분", t60: "60분",
+            tMsg: "분 뒤 자동 종료 설정", statusRec: "🔴 녹음 중...", statusGen: "⏳ 생성 중..."
+        },
+        en: {
+            title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
+            tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
+            bgm1t: "Warm Starlight Music Box", bgm1d: "Calming and gentle melodies",
+            bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
+            bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
+            bgm4t: "Twinkling Starry Dreams", bgm4d: "Mystical and bright melodies",
+            record: "Record Mommy's Voice (10s)", stop: "⏹ Stop Lullaby",
+            mixer: "🎚️ Live Mixer", vbgm: "BGM Volume", vvoice: "Voice Volume",
+            timer: "⏲️ Sleep Timer", t10: "10m", t30: "30m", t60: "60m",
+            tMsg: "m until auto-stop", statusRec: "🔴 Recording...", statusGen: "⏳ Generating..."
+        },
+        tr: {
+            title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
+            tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
+            bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
+            bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
+            bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
+            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik ve parlak melodiler",
+            record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
+            mixer: "🎚️ Canlı Karıştırıcı", vbgm: "BGM Ses Seviyesi", vvoice: "Ses Seviyesi",
+            timer: "⏲️ Uyku Zamanlayıcısı", t10: "10dk", t30: "30dk", t60: "60dk",
+            tMsg: "dk sonra kapanacak", statusRec: "🔴 Kaydediliyor...", statusGen: "⏳ Oluşturuluyor..."
+        }
+    };
 
-    // 1. 탭 전환 
+    let currentLang = 'ko';
+
+    function changeLang(lang, btn) {
+        currentLang = lang;
+        const d = langData[lang];
+        document.getElementById('main-title').innerText = d.title;
+        document.getElementById('sub-title').innerText = d.sub;
+        document.getElementById('tab-1').innerText = d.tab1;
+        document.getElementById('tab-2').innerText = d.tab2;
+        document.getElementById('bgm1-t').innerText = d.bgm1t; document.getElementById('bgm1-d').innerText = d.bgm1d;
+        document.getElementById('bgm2-t').innerText = d.bgm2t; document.getElementById('bgm2-d').innerText = d.bgm2d;
+        document.getElementById('bgm3-t').innerText = d.bgm3t; document.getElementById('bgm3-d').innerText = d.bgm3d;
+        document.getElementById('bgm4-t').innerText = d.bgm4t; document.getElementById('bgm4-d').innerText = d.bgm4d;
+        document.getElementById('recordBtn').innerText = d.record;
+        document.getElementById('stopBtn').innerText = d.stop;
+        document.getElementById('mixer-title').innerText = d.mixer;
+        document.getElementById('vol-bgm-label').innerText = d.vbgm;
+        document.getElementById('vol-voice-label').innerText = d.vvoice;
+        document.getElementById('timer-title').innerText = d.timer;
+        document.getElementById('t-10').innerText = d.t10;
+        document.getElementById('t-30').innerText = d.t30;
+        document.getElementById('t-60').innerText = d.t60;
+        
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    let selectedBgmSrc = 'bgm1.mp3';
+    let timerId = null;
+
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
@@ -122,48 +206,57 @@
         }
     }
 
-    // 기본 모드 음악 재생 
     function togglePlay(btn, src) {
         const bgmPlayer = document.getElementById('audio-player');
         const voicePlayer = document.getElementById('voice-player');
-        
         voicePlayer.pause(); 
         bgmPlayer.volume = 1.0; 
-
-        selectedBgmSrc = src; // 고른 음악 기억하기
+        selectedBgmSrc = src;
 
         if (currentBtn === btn && !bgmPlayer.paused) {
             bgmPlayer.pause();
             btn.innerText = '▶';
-            btn.style.background = '#00b894';
             return;
         }
         resetPlayButtons();
         bgmPlayer.src = src;
         bgmPlayer.play();
         btn.innerText = '⏸';
-        btn.style.background = '#d63031';
         currentBtn = btn;
     }
 
     let currentBtn = null;
     function resetPlayButtons() {
-        document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; b.style.background = '#00b894'; });
+        document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; });
+    }
+
+    function updateVolume() {
+        document.getElementById('audio-player').volume = document.getElementById('bgmVol').value;
+        document.getElementById('voice-player').volume = document.getElementById('voiceVol').value;
+    }
+
+    function setTimer(mins, btn) {
+        if(timerId) clearTimeout(timerId);
+        document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('timer-display').innerText = `${mins}${langData[currentLang].tMsg}`;
+        
+        timerId = setTimeout(() => {
+            stopBothAudios();
+            document.getElementById('timer-display').innerText = "Zzz...";
+            document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+        }, mins * 60000);
     }
 
     function stopBothAudios() {
         document.getElementById('audio-player').pause();
         document.getElementById('voice-player').pause();
-        const stopBtn = document.getElementById('stopBtn');
-        if(stopBtn) stopBtn.style.display = 'none';
-        
-        const statusText = document.getElementById('status-text');
-        if(statusText.innerText.includes("무한 재생")) {
-            statusText.innerText = "자장가 재생이 중지되었습니다. 🌙";
-        }
+        if(timerId) clearTimeout(timerId);
+        document.getElementById('stopBtn').style.display = 'none';
+        document.getElementById('timer-display').innerText = "";
+        document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
     }
 
-    // 2. 녹음 및 믹싱 재생!
     let mediaRecorder;
     let audioChunks = [];
 
@@ -171,60 +264,45 @@
         const btn = document.getElementById('recordBtn');
         const stopBtn = document.getElementById('stopBtn');
         const status = document.getElementById('status-text');
-        
         const bgmPlayer = document.getElementById('audio-player'); 
         const voicePlayer = document.getElementById('voice-player'); 
 
-        if (btn.innerText.includes("녹음하기")) {
+        if (btn.innerText.includes(langData[currentLang].record.split(' ')[0])) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
-
                 stopBothAudios(); 
 
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 mediaRecorder.onstop = async () => {
                     btn.disabled = true;
-                    status.innerText = "⏳ 목소리 복제 및 자장가 생성 중... (잠시만 기다려주세요)";
+                    status.innerText = langData[currentLang].statusGen;
                     
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    const response = await fetch('/api/clone', {
-                        method: 'POST',
-                        body: audioBlob
-                    });
+                    const response = await fetch('/api/clone', { method: 'POST', body: audioBlob });
 
                     if (response.ok) {
-                        // 🎧 [1] 배경 음악 세팅: 형님이 올려둔 로컬 파일(bgm1~4)
                         bgmPlayer.src = selectedBgmSrc; 
-                        bgmPlayer.volume = 0.2; 
-                        
-                        // 🗣️ [2] 엄마 목소리 세팅
+                        bgmPlayer.volume = document.getElementById('bgmVol').value;
                         const resBlob = await response.blob();
                         voicePlayer.src = URL.createObjectURL(resBlob);
-                        voicePlayer.volume = 1.0;
-                        
-                        // 🚀 [3] 동시 플레이!
+                        voicePlayer.volume = document.getElementById('voiceVol').value;
                         bgmPlayer.play();
                         voicePlayer.play();
-                        
-                        btn.innerText = "엄마 목소리 다시 녹음하기";
-                        status.innerText = "✨ 내가 고른 음악과 엄마 목소리가 무한 재생 중입니다.";
+                        status.innerText = "✨";
                         stopBtn.style.display = 'inline-block'; 
-                    } else {
-                        status.innerText = "❌ 실패! ElevenLabs 크레딧이나 설정을 확인하세요.";
                     }
                     btn.disabled = false;
+                    btn.innerText = langData[currentLang].record;
                 };
 
                 mediaRecorder.start();
-                btn.innerText = "🛑 녹음 중단 (자동 전송)";
-                btn.style.background = "#d63031";
-                status.innerText = "🔴 엄마 목소리를 10초 정도 들려주세요...";
-                
+                btn.innerText = "🛑 STOP";
+                status.innerText = langData[currentLang].statusRec;
                 setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
             } catch (err) {
-                alert("마이크 권한을 허용해주셔야 합니다!");
+                alert("Microphone error!");
             }
         } else {
             mediaRecorder.stop();
