@@ -25,7 +25,6 @@
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 8곡 트랙 리스트 스크롤 영역 */
         .track-list { max-height: 420px; overflow-y: auto; padding-right: 5px; }
         .track-list::-webkit-scrollbar { width: 4px; }
         .track-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -50,7 +49,6 @@
         .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
         
-        /* 🔥 상태 메시지 스타일: 버튼 아래 정렬 */
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
     </style>
 </head>
@@ -88,19 +86,16 @@
         <div id="ai-mode" class="content-section ai-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
-            
             <p id="status-text"></p>
         </div>
 
         <div class="common-controls">
             <button class="stop-btn" id="stopBtn" onclick="stopBothAudios()">⏹ 자장가 끄기</button>
-
             <div class="premium-panel">
                 <div class="panel-title" id="mixer-title">🎚️ 실시간 볼륨 믹서</div>
                 <div class="slider-group"><label id="vol-bgm-label">배경 음악 볼륨 (BGM)</label><input type="range" id="bgmVol" min="0" max="1" step="0.1" value="0.2" oninput="updateVolume()"></div>
                 <div class="slider-group"><label id="vol-voice-label">엄마 목소리 볼륨 (Voice)</label><input type="range" id="voiceVol" min="0" max="1" step="0.1" value="1.0" oninput="updateVolume()"></div>
             </div>
-
             <div class="premium-panel">
                 <div class="panel-title" id="timer-title">⏲️ 취침 타이머</div>
                 <div class="timer-grid">
@@ -132,7 +127,8 @@
             record: "엄마 목소리 녹음하기 (10초)", stop: "⏹ 자장가 끄기",
             mixer: "🎚️ 실시간 볼륨 믹서", vbgm: "배경 음악 볼륨 (BGM)", vvoice: "엄마 목소리 볼륨 (Voice)",
             timer: "⏲️ 취침 타이머", t10: "10분", t30: "30분", t60: "60분",
-            tMsg: "분 뒤 자동 종료 설정", statusRec: "🔴 녹음 중...", statusGen: "⏳ 생성 중..."
+            tMsg: "분 뒤 자동 종료 설정", statusRec: "🔴 녹음 중...", statusGen: "⏳ 생성 중...",
+            statusQueue: "⏳ 접속자가 많아 대기 중... "
         },
         en: {
             title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
@@ -148,7 +144,8 @@
             record: "Record Mommy's Voice (10s)", stop: "⏹ Stop Lullaby",
             mixer: "🎚️ Live Mixer", vbgm: "BGM Volume", vvoice: "Voice Volume",
             timer: "⏲️ Sleep Timer", t10: "10m", t30: "30m", t60: "60m",
-            tMsg: "m until auto-stop", statusRec: "🔴 Recording...", statusGen: "⏳ Generating..."
+            tMsg: "m until auto-stop", statusRec: "🔴 Recording...", statusGen: "⏳ Generating...",
+            statusQueue: "⏳ Server busy, waiting in queue... "
         },
         tr: {
             title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
@@ -158,13 +155,14 @@
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
             bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik ve parlak melodiler",
             bgm5t: "Işıl Işıl Yıldız", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
-            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif 및 sofistike klasik bir melodi",
+            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif ve sofistike klasik bir melodi",
             bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
             bgm8t: "Ninni (Sıcak Melodi)", bgm8d: "Akdeniz esintili sıcacık bir Türk ninnisi",
             record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
             mixer: "🎚️ Canlı Karıştırıcı", vbgm: "BGM Ses Seviyesi", vvoice: "Ses Seviyesi",
             timer: "⏲️ Uyku Zamanlayıcısı", t10: "10dk", t30: "30dk", t60: "60dk",
-            tMsg: "dk sonra kapanacak", statusRec: "🔴 Kaydediliyor...", statusGen: "⏳ Oluşturuluyor..."
+            tMsg: "dk sonra kapanacak", statusRec: "🔴 Kaydediliyor...", statusGen: "⏳ Oluşturuluyor...",
+            statusQueue: "⏳ Sunucu yoğun, sırada bekleniyor... "
         }
     };
 
@@ -259,11 +257,13 @@
 
     let mediaRecorder;
     let audioChunks = [];
+
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
         const bgmPlayer = document.getElementById('audio-player'); 
         const voicePlayer = document.getElementById('voice-player'); 
+
         if (btn.innerText.includes(langData[currentLang].record.split(' ')[0])) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -271,29 +271,54 @@
                 audioChunks = [];
                 stopBothAudios(); 
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
+                
                 mediaRecorder.onstop = async () => {
                     btn.disabled = true;
-                    status.innerText = langData[currentLang].statusGen;
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    const response = await fetch('/api/clone', { 
-                        method: 'POST', 
-                        headers: { 'x-lang': currentLang },
-                        body: audioBlob 
-                    });
-                    if (response.ok) {
-                        bgmPlayer.src = selectedBgmSrc; 
-                        bgmPlayer.volume = document.getElementById('bgmVol').value;
-                        const resBlob = await response.blob();
-                        voicePlayer.src = URL.createObjectURL(resBlob);
-                        voicePlayer.volume = document.getElementById('voiceVol').value;
-                        bgmPlayer.play();
-                        voicePlayer.play();
-                        status.innerText = "✨";
-                        document.getElementById('stopBtn').style.display = 'block'; 
+                    
+                    let success = false;
+                    let retryCount = 0;
+                    const maxRetries = 5;
+
+                    while (!success && retryCount < maxRetries) {
+                        // 🔥 상태 메시지 업데이트: 첫 시도면 '생성 중', 재시도면 '대기 중' 표시
+                        status.innerText = retryCount === 0 ? langData[currentLang].statusGen : 
+                                           `${langData[currentLang].statusQueue} (${retryCount}/${maxRetries})`;
+
+                        const response = await fetch('/api/clone', { 
+                            method: 'POST', 
+                            headers: { 'x-lang': currentLang },
+                            body: audioBlob 
+                        });
+
+                        if (response.ok) {
+                            const resBlob = await response.blob();
+                            voicePlayer.src = URL.createObjectURL(resBlob);
+                            bgmPlayer.src = selectedBgmSrc; 
+                            bgmPlayer.volume = document.getElementById('bgmVol').value;
+                            voicePlayer.volume = document.getElementById('voiceVol').value;
+                            bgmPlayer.play();
+                            voicePlayer.play();
+                            status.innerText = "✨";
+                            document.getElementById('stopBtn').style.display = 'block'; 
+                            success = true;
+                        } else if (response.status === 429) {
+                            // 🔥 서버 지연 시 3초 대기 후 재시도
+                            retryCount++;
+                            await new Promise(res => setTimeout(res, 3000));
+                        } else {
+                            status.innerText = "❌ Error";
+                            break;
+                        }
+                    }
+
+                    if (!success && retryCount >= maxRetries) {
+                        status.innerText = currentLang === 'ko' ? "접속자가 너무 많습니다. 잠시 후 시도해주세요." : "Server busy. Please try again later.";
                     }
                     btn.disabled = false;
                     btn.innerText = langData[currentLang].record;
                 };
+
                 mediaRecorder.start();
                 btn.innerText = "🛑 STOP";
                 status.innerText = langData[currentLang].statusRec;
