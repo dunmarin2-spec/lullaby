@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
+<!DOCTYPE html><html lang="ko"><head>
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,9 +49,7 @@
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
         
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
-    </style>
-</head>
-<body>
+    </style></head><body>
     <div class="app-container">
         <div class="lang-selector" translate="no">
             <button class="lang-btn active" onclick="changeLang('ko', this)">KO</button>
@@ -80,7 +76,9 @@
                 <div class="track-card"><div class="track-info"><h3 id="bgm5-t">반짝반짝 작은 별</h3><p id="bgm5-d">밤하늘의 은하수를 수놓는 세계적인 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm5.mp3')">▶</button></div>
                 <div class="track-card"><div class="track-info"><h3 id="bgm6-t">바이스바흐 자장가</h3><p id="bgm6-d">우아하고 품격 있는 클래식 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm6.mp3')">▶</button></div>
                 <div class="track-card"><div class="track-info"><h3 id="bgm7-t">단디니 단디니 (Dandini)</h3><p id="bgm7-d">터키 엄마들이 가장 사랑하는 국민 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm7.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm8-t">포근한 닌니 (Ninni)</h3><p id="bgm8-d">지중해의 따뜻함을 담은 터키의 노래</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm8-t">사랑받는 아이를 위한 노래</h3><p id="bgm8-d">부드러운 기타 선율과 감미로운 목소리가 어우러진 터키의 아름다운 자장가입니다.</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm9-t">잠든 천사를 위한 노래</h3><p id="bgm9-d">근심 없이 잠든 아이의 평화로은 모습을 노래한 터키의 국민 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm9.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm10-t">나의 달콤한 꿀단지, 작은 천사를 위한 노래</h3><p id="bgm10-d">사랑하는 아이를 세상에서 가장 달콤한 것들에 비유한 아름다운 터키 자장가입니다</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm10.mp3')">▶</button></div>
             </div>
         </div>
 
@@ -110,9 +108,7 @@
     </div>
 
     <audio id="audio-player" loop></audio>
-    <audio id="voice-player" loop></audio>
-
-<script>
+    <audio id="voice-player" loop></audio><script>
     const langData = {
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
@@ -124,7 +120,9 @@
             bgm5t: "반짝반짝 작은 별", bgm5d: "밤하늘의 은하수를 수놓는 세계적인 자장가",
             bgm6t: "바이스바흐 자장가", bgm6d: "우아하고 품격 있는 클래식 선율",
             bgm7t: "단디니 단디니 (Dandini)", bgm7d: "터키 엄마들이 가장 사랑하는 국민 자장가",
-            bgm8t: "포근한 닌니 (Ninni)", bgm8d: "지중해의 따뜻함을 담은 터키의 노래",
+            bgm8t: "사랑받는 아이를 위한 노래", bgm8d: "부드러운 기타 선율과 감미로운 목소리가 어우러진 터키의 아름다운 자장가입니다.",
+            bgm9t: "잠든 천사를 위한 노래", bgm9d: "근심 없이 잠든 아이의 평화로은 모습을 노래한 터키의 국민 자장가",
+            bgm10t: "나의 달콤한 꿀단지, 작은 천사를 위한 노래", bgm10d: "사랑하는 아이를 세상에서 가장 달콤한 것들에 비유한 아름다운 터키 자장가입니다",
             record: "엄마 목소리 녹음하기 (10초)", stop: "⏹ 자장가 끄기",
             mixer: "🎚️ 실시간 볼륨 믹서", vbgm: "배경 음악 볼륨 (BGM)", vvoice: "엄마 목소리 볼륨 (Voice)",
             timer: "⏲️ 취침 타이머", t10: "10분", t30: "30분", t60: "60분",
@@ -141,7 +139,9 @@
             bgm5t: "Twinkle Twinkle Little Star", bgm5d: "A world-famous melody that lights up the sky",
             bgm6t: "Weisbach Lullaby", bgm6d: "An elegant and sophisticated classical melody",
             bgm7t: "Dandini Dandini", bgm7d: "The most beloved Turkish traditional lullaby",
-            bgm8t: "Cozy Ninni", bgm8d: "A warm Turkish lullaby with Mediterranean vibes",
+            bgm8t: "Song for the Beloved Child", bgm8d: "A beautiful Turkish lullaby with soft guitar and sweet voice.",
+            bgm9t: "Song for the Sleeping Angel", bgm9d: "A Turkish national lullaby singing of a peacefully sleeping child.",
+            bgm10t: "My Sweet Honeycomb", bgm10d: "A Turkish lullaby comparing a child to the sweetest things in the world.",
             record: "Record Mommy's Voice (10s)", stop: "⏹ Stop Lullaby",
             mixer: "🎚️ Live Mixer", vbgm: "BGM Volume", vvoice: "Voice Volume",
             timer: "⏲️ Sleep Timer", t10: "10m", t30: "30m", t60: "60m",
@@ -154,11 +154,13 @@
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
             bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
-            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik 및 parlak melodiler",
+            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik ve parlak melodiler",
             bgm5t: "Işıl Işıl Yıldız", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
-            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif 및 sofistike klasik bir melodi",
+            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif ve sofistike klasik bir melodi",
             bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
-            bgm8t: "Ninni (Sıcak Melodi)", bgm8d: "Akdeniz esintili sıcacık bir Türk ninnisi",
+            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar ve tatlı sesli güzel bir Türk ninnisi.",
+            bgm9t: "E Bebeğim E", bgm9d: "Huzur içinde uyuyan bir çocuğu anlatan Türk ninnisi.",
+            bgm10t: "Sen Benim Bal Peteğim", bgm10d: "Çocuğu dünyanın en tatlı şeylerine benzeten bir Türk ninnisi.",
             record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
             mixer: "🎚️ Canlı Karıştırıcı", vbgm: "BGM Ses Seviyesi", vvoice: "Ses Seviyesi",
             timer: "⏲️ Uyku Zamanlayıcısı", t10: "10dk", t30: "30dk", t60: "60dk",
@@ -179,9 +181,12 @@
         document.getElementById('sub-title').innerText = d.sub;
         document.getElementById('tab-1').innerText = d.tab1;
         document.getElementById('tab-2').innerText = d.tab2;
-        for(let i = 1; i <= 8; i++) {
-            document.getElementById(`bgm${i}-t`).innerText = d[`bgm${i}t`];
-            document.getElementById(`bgm${i}-d`).innerText = d[`bgm${i}d`];
+        // 트랙 10번까지 루프 돌도록 수정
+        for(let i = 1; i <= 10; i++) {
+            const titleEl = document.getElementById(`bgm${i}-t`);
+            const descEl = document.getElementById(`bgm${i}-d`);
+            if(titleEl) titleEl.innerText = d[`bgm${i}t`];
+            if(descEl) descEl.innerText = d[`bgm${i}d`];
         }
         document.getElementById('recordBtn').innerText = d.record;
         document.getElementById('stopBtn').innerText = d.stop;
@@ -324,7 +329,4 @@
                 setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
             } catch (err) { alert("Mic error!"); }
         } else { mediaRecorder.stop(); }
-    }
-</script>
-</body>
-</html>
+    }</script></body></html>
