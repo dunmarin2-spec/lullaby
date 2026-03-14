@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         'Accept': 'audio/mpeg'
       },
       body: JSON.stringify({
-        text: "우리 아기 예쁜 아기, 엄마가 항상 지켜줄게. 코장코장 잘 자렴.",
+        text: "우리 아기... 예쁜 아기... 엄마가 항상 지켜줄게... 자장... 자장... 우리 아기... 코~ 자자...",
         model_id: "eleven_multilingual_v2"
       })
     });
