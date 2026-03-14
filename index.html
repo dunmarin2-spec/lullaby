@@ -5,36 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>엄마 품 자장가</title>
     <style>
-        /* 앱의 전체적인 분위기를 따뜻하고 부드럽게 설정 */
         body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; background: white; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
         header { padding: 25px 20px; text-align: center; background: #6c5ce7; color: white; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
         h1 { margin: 0; font-size: 1.6rem; font-weight: 800; }
         
-        /* 탭 버튼 스타일 */
         .tabs { display: flex; margin: 20px; background: #f1f2f6; border-radius: 30px; overflow: hidden; }
         .tab-btn { flex: 1; padding: 14px; border: none; background: none; font-size: 1rem; cursor: pointer; transition: 0.3s; color: #a4b0be; font-weight: bold; }
         .tab-btn.active { background: #6c5ce7; color: white; border-radius: 30px; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
         
-        /* 콘텐츠 영역 */
         .content-section { display: none; padding: 10px 20px 30px 20px; }
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 음악 리스트 스타일 */
         .track-card { background: #ffffff; padding: 18px; border-radius: 16px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f1f2f6; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .track-info h3 { margin: 0 0 6px 0; font-size: 1.1rem; color: #2d3436; }
         .track-info p { margin: 0; font-size: 0.85rem; color: #636e72; }
         .play-btn { background: #00b894; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3); transition: 0.2s; }
         .play-btn:active { transform: scale(0.95); }
 
-        /* AI 모드 스타일 */
         .ai-section { text-align: center; padding-top: 30px; }
         .record-btn { background: #ff7675; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; width: 90%; box-shadow: 0 6px 15px rgba(255, 118, 117, 0.4); transition: 0.3s; }
         .record-btn:active { transform: scale(0.98); }
         .premium-badge { background: #ffeaa7; color: #d63031; font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; font-weight: 900; vertical-align: middle; margin-left: 8px; letter-spacing: 1px;}
         
-        /* 🔥 새로 추가된 정지 버튼 스타일 */
         .stop-btn { background: #636e72; color: white; border: none; padding: 16px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; width: 90%; box-shadow: 0 6px 15px rgba(99, 110, 114, 0.4); transition: 0.3s; display: none; }
         .stop-btn:active { transform: scale(0.98); }
     </style>
@@ -42,7 +36,7 @@
 <body>
     <div class="app-container">
         <header>
-            <h1>🌙 코장코장 자장가</h1>
+            <h1>🌙 자장자장 자장가</h1>
             <p style="margin: 8px 0 0 0; font-size: 0.95rem; opacity: 0.9;">우리 아이 통잠 프로젝트</p>
         </header>
 
@@ -59,40 +53,47 @@
                     <h3>따뜻한 별빛 오르골</h3>
                     <p>마음을 진정시키는 잔잔한 멜로디</p>
                 </div>
-                <button class="play-btn" onclick="togglePlay(this, 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3')">▶</button>
+                <button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button>
             </div>
             
             <div class="track-card">
                 <div class="track-info">
-                    <h3>토닥토닥 밤비 소리</h3>
-                    <p>깊은 수면을 돕는 자연 백색소음</p>
+                    <h3>태엽 인형의 꿈</h3>
+                    <p>포근한 안도감을 주는 맑은 오르골 소리</p>
                 </div>
-                <button class="play-btn" onclick="togglePlay(this, 'https://cdn.pixabay.com/download/audio/2021/08/09/audio_9b9a67a0da.mp3')">▶</button>
+                <button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button>
             </div>
             
             <div class="track-card">
                 <div class="track-info">
-                    <h3>포근한 자장가 피아노</h3>
-                    <p>아기를 꿈나라로 이끄는 클래식</p>
+                    <h3>어쿠스틱 숲속 산책</h3>
+                    <p>포근한 기타 선율과 함께하는 숲속 요정들의 자장가</p>
                 </div>
-                <button class="play-btn" onclick="togglePlay(this, 'https://cdn.pixabay.com/download/audio/2022/02/07/audio_03d2b2edce.mp3')">▶</button>
+                <button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button>
+            </div>
+
+            <div class="track-card">
+                <div class="track-info">
+                    <h3>반짝반짝 별빛 꿈결</h3>
+                    <p>밤하늘의 별가루가 내려앉는 듯한 영롱하고 신비로운 멜로디</p>
+                </div>
+                <button class="play-btn" onclick="togglePlay(this, 'bgm4.mp3')">▶</button>
             </div>
         </div>
 
         <div id="ai-mode" class="content-section ai-section">
             <h2 style="margin-bottom: 10px; color: #2d3436;">세상에 하나뿐인 자장가 <span class="premium-badge">PRO</span></h2>
             <p style="color: #636e72; margin-bottom: 35px; line-height: 1.6; font-size: 0.95rem;">
-                아이가 칭얼거릴 때, 엄마가 옆에 있는 것처럼<br>세상에서 가장 편안한 목소리를 들려주세요.
+                기본 모드에서 선택한 음악 위에<br>엄마의 다정한 목소리를 얹어주세요.
             </p>
             
             <div style="font-size: 4rem; margin-bottom: 15px;">🎙️</div>
             
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 10초 녹음하기</button>
-            
-            <button class="stop-btn" id="stopBtn" onclick="stopAIAudio()">⏹ 자장가 끄기</button>
+            <button class="stop-btn" id="stopBtn" onclick="stopBothAudios()">⏹ 자장가 끄기</button>
             
             <div style="background: #f1f2f6; padding: 15px; border-radius: 12px; margin-top: 30px; text-align: left;">
-                <p style="margin: 0; font-size: 0.85rem; color: #636e72;">💡 <strong>사용 팁:</strong> "우리아기 예쁜아기~" 처럼 평소 아이를 달랠 때 쓰는 따뜻한 톤으로 10초간 말해주세요.</p>
+                <p style="margin: 0; font-size: 0.85rem; color: #636e72;">💡 <strong>사용 팁:</strong> 기본 모드에서 원하는 배경음악을 먼저 들어보고 고르신 후, 엄마 목소리를 녹음해 보세요!</p>
             </div>
             
             <p id="status-text" style="margin-top: 25px; font-weight: bold; color: #6c5ce7; font-size: 1.1rem;"></p>
@@ -100,9 +101,13 @@
     </div>
 
     <audio id="audio-player" loop></audio>
+    <audio id="voice-player" loop></audio>
 
 <script>
-    // 1. 탭 전환 및 음악 재생 (기본 기능)
+    // 🔥 기본값: 아무것도 안 고르면 1번 음악(bgm1.mp3)이 깔리도록 설정
+    let selectedBgmSrc = 'bgm1.mp3';
+
+    // 1. 탭 전환 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
@@ -112,45 +117,53 @@
         } else {
             document.querySelectorAll('.tab-btn')[1].classList.add('active');
             document.getElementById('ai-mode').classList.add('active');
-            document.getElementById('audio-player').pause();
+            stopBothAudios(); 
             resetPlayButtons();
-            
-            // 탭 옮기면 정지 버튼도 숨기기
-            if(document.getElementById('stopBtn')) {
-                document.getElementById('stopBtn').style.display = 'none';
-            }
         }
     }
 
+    // 기본 모드 음악 재생 
     function togglePlay(btn, src) {
-        const player = document.getElementById('audio-player');
-        if (currentBtn === btn && !player.paused) {
-            player.pause();
+        const bgmPlayer = document.getElementById('audio-player');
+        const voicePlayer = document.getElementById('voice-player');
+        
+        voicePlayer.pause(); 
+        bgmPlayer.volume = 1.0; 
+
+        selectedBgmSrc = src; // 고른 음악 기억하기
+
+        if (currentBtn === btn && !bgmPlayer.paused) {
+            bgmPlayer.pause();
             btn.innerText = '▶';
             btn.style.background = '#00b894';
             return;
         }
         resetPlayButtons();
-        player.src = src;
-        player.play();
+        bgmPlayer.src = src;
+        bgmPlayer.play();
         btn.innerText = '⏸';
         btn.style.background = '#d63031';
         currentBtn = btn;
     }
+
     let currentBtn = null;
     function resetPlayButtons() {
         document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; b.style.background = '#00b894'; });
     }
 
-    // 🔥 정지 버튼을 누르면 작동하는 함수
-    function stopAIAudio() {
-        const player = document.getElementById('audio-player');
-        player.pause();
-        document.getElementById('stopBtn').style.display = 'none'; // 버튼 다시 숨기기
-        document.getElementById('status-text').innerText = "자장가 재생이 중지되었습니다. 🌙";
+    function stopBothAudios() {
+        document.getElementById('audio-player').pause();
+        document.getElementById('voice-player').pause();
+        const stopBtn = document.getElementById('stopBtn');
+        if(stopBtn) stopBtn.style.display = 'none';
+        
+        const statusText = document.getElementById('status-text');
+        if(statusText.innerText.includes("무한 재생")) {
+            statusText.innerText = "자장가 재생이 중지되었습니다. 🌙";
+        }
     }
 
-    // 2. 진짜 녹음 및 실시간 AI 복제 기능
+    // 2. 녹음 및 믹싱 재생!
     let mediaRecorder;
     let audioChunks = [];
 
@@ -158,7 +171,9 @@
         const btn = document.getElementById('recordBtn');
         const stopBtn = document.getElementById('stopBtn');
         const status = document.getElementById('status-text');
-        const player = document.getElementById('audio-player');
+        
+        const bgmPlayer = document.getElementById('audio-player'); 
+        const voicePlayer = document.getElementById('voice-player'); 
 
         if (btn.innerText.includes("녹음하기")) {
             try {
@@ -166,8 +181,7 @@
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
 
-                // 녹음 시작하면 기존 정지 버튼 숨기기
-                stopBtn.style.display = 'none';
+                stopBothAudios(); 
 
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 mediaRecorder.onstop = async () => {
@@ -181,15 +195,22 @@
                     });
 
                     if (response.ok) {
+                        // 🎧 [1] 배경 음악 세팅: 형님이 올려둔 로컬 파일(bgm1~4)
+                        bgmPlayer.src = selectedBgmSrc; 
+                        bgmPlayer.volume = 0.2; 
+                        
+                        // 🗣️ [2] 엄마 목소리 세팅
                         const resBlob = await response.blob();
-                        player.src = URL.createObjectURL(resBlob);
-                        player.play();
+                        voicePlayer.src = URL.createObjectURL(resBlob);
+                        voicePlayer.volume = 1.0;
+                        
+                        // 🚀 [3] 동시 플레이!
+                        bgmPlayer.play();
+                        voicePlayer.play();
                         
                         btn.innerText = "엄마 목소리 다시 녹음하기";
-                        status.innerText = "✨ 자장가 완성! 무한 반복 재생 중입니다.";
-                        
-                        // 🔥 노래가 나오기 시작하면 '정지 버튼' 짠 하고 나타남
-                        stopBtn.style.display = 'inline-block';
+                        status.innerText = "✨ 내가 고른 음악과 엄마 목소리가 무한 재생 중입니다.";
+                        stopBtn.style.display = 'inline-block'; 
                     } else {
                         status.innerText = "❌ 실패! ElevenLabs 크레딧이나 설정을 확인하세요.";
                     }
