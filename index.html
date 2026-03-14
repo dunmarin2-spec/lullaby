@@ -49,6 +49,7 @@
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
         
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
+        .guide-box { background: rgba(108, 92, 231, 0.1); border: 1px dashed rgba(108, 92, 231, 0.3); color: #a29bfe; font-size: 0.8rem; line-height: 1.5; text-align: center; margin-bottom: 20px; padding: 12px; border-radius: 15px; }
     </style></head><body>
     <div class="app-container">
         <div class="lang-selector" translate="no">
@@ -68,6 +69,7 @@
         </div>
 
         <div id="basic-mode" class="content-section active">
+            <p id="main-info" class="guide-box">원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.</p>
             <div class="track-list">
                 <div class="track-card"><div class="track-info"><h3 id="bgm1-t">따뜻한 별빛 오르골</h3><p id="bgm1-d">마음을 진정시키는 잔잔한 멜로디</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button></div>
                 <div class="track-card"><div class="track-info"><h3 id="bgm2-t">태엽 인형의 꿈</h3><p id="bgm2-d">포근한 안도감을 주는 맑은 오르골</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button></div>
@@ -84,6 +86,7 @@
 
         <div id="ai-mode" class="content-section ai-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
+            <p id="ai-info" class="guide-box">음악을 선택하고 목소리를 녹음하면 음악 위에 엄마의 목소리가 합쳐집니다.</p>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
             <p id="status-text"></p>
         </div>
@@ -113,6 +116,8 @@
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
+            mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
+            aiInfo: "음악을 선택하고 목소리를 녹음하면 음악 위에 엄마의 목소리가 합쳐집니다.",
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
             bgm3t: "천사의 품속에서(AI)", bgm3d: "까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.",
@@ -132,6 +137,8 @@
         en: {
             title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
+            mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
+            aiInfo: "Select music and record your voice to blend Mommy's voice over the melody.",
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
             bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
             bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
@@ -151,6 +158,8 @@
         tr: {
             title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
             tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
+            mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kaydı başlatın.",
+            aiInfo: "Müzik seçip sesinizi kaydedin, anne sesi müzikle birleşecektir.",
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
             bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
@@ -181,6 +190,8 @@
         document.getElementById('sub-title').innerText = d.sub;
         document.getElementById('tab-1').innerText = d.tab1;
         document.getElementById('tab-2').innerText = d.tab2;
+        document.getElementById('main-info').innerText = d.mainInfo;
+        document.getElementById('ai-info').innerText = d.aiInfo;
         for(let i = 1; i <= 10; i++) {
             const titleEl = document.getElementById(`bgm${i}-t`);
             const descEl = document.getElementById(`bgm${i}-d`);
