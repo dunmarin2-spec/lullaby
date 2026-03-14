@@ -1,44 +1,49 @@
 import { Buffer } from 'buffer';
-export const config = { api: { bodyParser: false } };
+
+export const config = {
+  api: { bodyParser: false },
+};
 
 export default async function handler(req, res) {
   const apiKey = process.env.ELEVENLABS_API_KEY;
+  // 형님이 고르신 '무조건 성공하는' 목소리 ID
   const FIXED_VOICE_ID = "0oqpliV6dVSr9XomngOW"; 
 
   try {
-    // 1. 일레븐랩스야, 내 열쇠 권한 진짜 뭐야? (로그 확인용)
-    const userRes = await fetch('https://api.elevenlabs.io/v1/user', {
-      headers: { 'xi-api-key': apiKey }
-    });
-    const userData = await userRes.json();
-    console.log("👤 내 계정 등급:", userData.subscription?.tier || "모름");
+    console.log("🚀 자장가 생성 시작...");
 
-    // 2. 가장 기본 모델(v1)로 시도해서 권한 뚫어보기
+    const chunks = [];
+    for await (const chunk of req) { chunks.push(chunk); }
+
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${FIXED_VOICE_ID}`, {
       method: 'POST',
       headers: {
         'xi-api-key': apiKey,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
       },
       body: JSON.stringify({
-        text: "우리 아기 예쁜 아기, 엄마가 항상 지켜줄게.",
-        model_id: "eleven_monolingual_v1" // 더 가벼운 모델로 변경
+        text: "우리 아기 예쁜 아기, 엄마가 항상 지켜줄게. 코장코장 잘 자렴.",
+        model_id: "eleven_multilingual_v2"
       })
     });
 
-    const data = await ttsRes.json();
-
+    // ❌ 에러가 났을 때만 이유를 확인
     if (!ttsRes.ok) {
-      // ❌ 여기서 에러나면 일레븐랩스 사이트에서 'Permissions' 확인이 필수입니다!
-      console.error('🔥 진짜 에러 이유:', JSON.stringify(data));
-      return res.status(ttsRes.status).json(data);
+      const errorData = await ttsRes.json();
+      console.error('🔥 일레븐랩스 에러:', JSON.stringify(errorData));
+      return res.status(ttsRes.status).json(errorData);
     }
 
+    // ✅ 성공했을 때는 오디오 파일로 변환해서 즉시 전송
     const resultAudio = await ttsRes.arrayBuffer();
+    
+    console.log("✅ 자장가 생성 성공! 폰으로 전송합니다.");
     res.setHeader('Content-Type', 'audio/mpeg');
     res.send(Buffer.from(resultAudio));
 
   } catch (error) {
+    console.error('💻 서버 코드 에러:', error.message);
     res.status(500).json({ error: error.message });
   }
 }
