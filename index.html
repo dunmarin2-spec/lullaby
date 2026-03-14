@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>엄마 품 자장가 - Global Premium</title>
     <style>
-        /* 프리미엄 야간 모드 테마 */
         :root { --primary: #6c5ce7; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ff7675; }
-        
         body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; padding-bottom: 50px; }
         
-        /* 🌍 언어 선택기 */
         .lang-selector { display: flex; justify-content: flex-end; padding: 15px 20px 0; gap: 8px; }
-        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #64748b; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: bold; transition: 0.3s; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #64748b; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
         .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
         header { padding: 30px 20px; text-align: center; }
@@ -22,32 +19,34 @@
 
         .tabs { display: flex; margin: 0 20px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 5px; }
         .tab-btn { flex: 1; padding: 14px; border: none; background: none; color: #64748b; cursor: pointer; transition: 0.3s; font-weight: bold; border-radius: 15px; }
-        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4); }
+        .tab-btn.active { background: var(--primary); color: white; }
 
-        .content-section { display: none; padding: 0 20px 40px; }
+        .content-section { display: none; padding: 0 20px; }
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .track-card { background: var(--card); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
-        .track-info h3 { margin: 0 0 6px 0; font-size: 1.1rem; color: #e2e8f0; }
-        .track-info p { margin: 0; font-size: 0.85rem; color: #94a3b8; line-height: 1.4; }
-        .play-btn { background: #00b894; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .track-card { background: var(--card); padding: 18px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .track-info h3 { margin: 0 0 4px 0; font-size: 1.05rem; color: #e2e8f0; }
+        .track-info p { margin: 0; font-size: 0.8rem; color: #94a3b8; }
+        .play-btn { background: #00b894; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        .premium-panel { background: var(--card); padding: 22px; border-radius: 24px; margin-top: 20px; border: 1px solid rgba(108, 92, 231, 0.2); }
-        .panel-title { font-size: 0.95rem; font-weight: bold; margin-bottom: 18px; color: #a29bfe; display: flex; align-items: center; gap: 8px; }
+        /* 🔥 공통 컨트롤러 영역 (타이머 & 믹서) */
+        .common-controls { padding: 0 20px; margin-top: 20px; }
+        .premium-panel { background: var(--card); padding: 20px; border-radius: 24px; margin-bottom: 15px; border: 1px solid rgba(108, 92, 231, 0.2); }
+        .panel-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 15px; color: #a29bfe; display: flex; align-items: center; gap: 8px; }
         
-        .slider-group { margin-bottom: 18px; }
-        .slider-group label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; }
+        .slider-group { margin-bottom: 15px; }
+        .slider-group label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; }
         input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
 
         .timer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
         .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
 
-        .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); transition: 0.3s; }
-        .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 12px; cursor: pointer; display: none; font-weight: bold; }
+        .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
+        .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
         
-        #status-text { margin-top: 25px; font-size: 1rem; color: #a29bfe; text-align: center; }
+        #status-text { margin-top: 20px; font-size: 0.9rem; color: #a29bfe; text-align: center; }
     </style>
 </head>
 <body>
@@ -87,12 +86,15 @@
             </div>
         </div>
 
-        <div id="ai-mode" class="content-section ai-section" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 10px;">🌌</div>
+        <div id="ai-mode" class="content-section ai-section">
+            <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
+        </div>
+
+        <div class="common-controls">
             <button class="stop-btn" id="stopBtn" onclick="stopBothAudios()">⏹ 자장가 끄기</button>
-            
-            <div class="premium-panel" style="text-align: left;">
+
+            <div class="premium-panel">
                 <div class="panel-title" id="mixer-title">🎚️ 실시간 볼륨 믹서</div>
                 <div class="slider-group">
                     <label id="vol-bgm-label">배경 음악 볼륨 (BGM)</label>
@@ -104,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="premium-panel" style="text-align: left;">
+            <div class="premium-panel">
                 <div class="panel-title" id="timer-title">⏲️ 취침 타이머</div>
                 <div class="timer-grid">
                     <button class="timer-btn" id="t-10" onclick="setTimer(10, this)">10분</button>
@@ -113,7 +115,6 @@
                 </div>
                 <p id="timer-display" style="font-size: 0.8rem; color: #ff7675; margin-top: 12px; min-height: 1rem; text-align: center;"></p>
             </div>
-
             <p id="status-text"></p>
         </div>
     </div>
@@ -122,7 +123,6 @@
     <audio id="voice-player" loop></audio>
 
 <script>
-    // 🌍 다국어 데이터
     const langData = {
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
@@ -163,6 +163,9 @@
     };
 
     let currentLang = 'ko';
+    let selectedBgmSrc = 'bgm1.mp3';
+    let timerId = null;
+    let currentBtn = null;
 
     function changeLang(lang, btn) {
         currentLang = lang;
@@ -184,13 +187,9 @@
         document.getElementById('t-10').innerText = d.t10;
         document.getElementById('t-30').innerText = d.t30;
         document.getElementById('t-60').innerText = d.t60;
-        
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
     }
-
-    let selectedBgmSrc = 'bgm1.mp3';
-    let timerId = null;
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -201,8 +200,6 @@
         } else {
             document.querySelectorAll('.tab-btn')[1].classList.add('active');
             document.getElementById('ai-mode').classList.add('active');
-            stopBothAudios(); 
-            resetPlayButtons();
         }
     }
 
@@ -210,22 +207,23 @@
         const bgmPlayer = document.getElementById('audio-player');
         const voicePlayer = document.getElementById('voice-player');
         voicePlayer.pause(); 
-        bgmPlayer.volume = 1.0; 
         selectedBgmSrc = src;
 
         if (currentBtn === btn && !bgmPlayer.paused) {
             bgmPlayer.pause();
             btn.innerText = '▶';
+            document.getElementById('stopBtn').style.display = 'none';
             return;
         }
         resetPlayButtons();
         bgmPlayer.src = src;
+        bgmPlayer.volume = document.getElementById('bgmVol').value;
         bgmPlayer.play();
         btn.innerText = '⏸';
         currentBtn = btn;
+        document.getElementById('stopBtn').style.display = 'block';
     }
 
-    let currentBtn = null;
     function resetPlayButtons() {
         document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; });
     }
@@ -255,6 +253,7 @@
         document.getElementById('stopBtn').style.display = 'none';
         document.getElementById('timer-display').innerText = "";
         document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+        resetPlayButtons();
     }
 
     let mediaRecorder;
@@ -273,15 +272,12 @@
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 stopBothAudios(); 
-
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 mediaRecorder.onstop = async () => {
                     btn.disabled = true;
                     status.innerText = langData[currentLang].statusGen;
-                    
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
                     const response = await fetch('/api/clone', { method: 'POST', body: audioBlob });
-
                     if (response.ok) {
                         bgmPlayer.src = selectedBgmSrc; 
                         bgmPlayer.volume = document.getElementById('bgmVol').value;
@@ -291,22 +287,17 @@
                         bgmPlayer.play();
                         voicePlayer.play();
                         status.innerText = "✨";
-                        stopBtn.style.display = 'inline-block'; 
+                        stopBtn.style.display = 'block'; 
                     }
                     btn.disabled = false;
                     btn.innerText = langData[currentLang].record;
                 };
-
                 mediaRecorder.start();
                 btn.innerText = "🛑 STOP";
                 status.innerText = langData[currentLang].statusRec;
                 setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
-            } catch (err) {
-                alert("Microphone error!");
-            }
-        } else {
-            mediaRecorder.stop();
-        }
+            } catch (err) { alert("Mic error!"); }
+        } else { mediaRecorder.stop(); }
     }
 </script>
 </body>
