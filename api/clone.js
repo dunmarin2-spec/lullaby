@@ -4,13 +4,13 @@ export const config = {
   api: { bodyParser: false },
 };
 
+// 🔥 [추가] 무작위 지연 함수: 요청이 한꺼번에 몰리는 것을 방지합니다.
+const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+
 export default async function handler(req, res) {
   const apiKey = process.env.ELEVENLABS_API_KEY;
-  
-  // 🔥 [업데이트] 앱(index.html)에서 보낸 언어 정보를 헤더에서 읽어옵니다.
   const lang = req.headers['x-lang'] || 'ko';
 
-  // 📝 언어별 맞춤 자장가 대사 (형님의 1.5초 숨 고르기 로직 포함)
   const lullabyTexts = {
     ko: "우리 아기. <break time=\"1.5s\" /> 예쁜 아기. <break time=\"1.5s\" /> 엄마가 항상 지켜줄게. <break time=\"1.5s\" /> 자장, 자장. <break time=\"1.5s\" /> 우리 아기, <break time=\"1.5s\" /> 코오, 자자.",
     en: "My sweet baby. <break time=\"1.5s\" /> My lovely child. <break time=\"1.5s\" /> Mommy will always protect you. <break time=\"1.5s\" /> Sleep tight, my dear. <break time=\"1.5s\" /> Close your eyes, <break time=\"1.5s\" /> and go to sleep.",
@@ -18,7 +18,9 @@ export default async function handler(req, res) {
   };
 
   try {
-    // 1. [자동 청소기] 현재 생성된 목소리 목록 확인 및 슬롯 비우기
+    // 1️⃣ [추가] 0~2초 사이의 무작위 지연을 주어 동시 접속 요청을 분산시킵니다.
+    await sleep(Math.random() * 2000);
+
     const voicesRes = await fetch("https://api.elevenlabs.io/v1/voices", {
       headers: { "xi-api-key": apiKey },
     });
@@ -27,13 +29,13 @@ export default async function handler(req, res) {
 
     if (customVoices.length >= 9) {
       const oldestVoiceId = customVoices[0].voice_id;
+      // 2️⃣ [수정] 삭제 요청 시 .catch()를 붙여 이미 삭제된 경우에도 다음 단계로 넘어가게 합니다.
       await fetch(`https://api.elevenlabs.io/v1/voices/${oldestVoiceId}`, {
         method: "DELETE",
         headers: { "xi-api-key": apiKey },
-      });
+      }).catch(err => console.log("이미 삭제된 목소리이거나 에러 발생, 무시하고 진행합니다."));
     }
 
-    // 2. [복제 시작] 스트림 데이터 받기
     const chunks = [];
     for await (const chunk of req) { chunks.push(chunk); }
     const audioBuffer = Buffer.concat(chunks);
@@ -49,11 +51,13 @@ export default async function handler(req, res) {
     });
 
     const addData = await addVoiceRes.json();
-    if (!addVoiceRes.ok) return res.status(addVoiceRes.status).json(addData);
+    
+    // 3️⃣ [추가] 슬롯이 꽉 차서 생성이 안 될 경우 클라이언트에 429(재시도 요청)를 보냅니다.
+    if (!addVoiceRes.ok) {
+      return res.status(429).json({ error: "Server Busy", detail: addData });
+    }
 
     const newVoiceId = addData.voice_id;
-
-    // 3. [자장가 생성] 선택된 언어에 맞는 텍스트로 TTS 생성
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${newVoiceId}`, {
       method: 'POST',
       headers: {
@@ -62,22 +66,13 @@ export default async function handler(req, res) {
         'Accept': 'audio/mpeg'
       },
       body: JSON.stringify({
-        // 🔥 선택된 언어(ko, en, tr)에 맞는 자장가 문구가 자동으로 선택됩니다.
         text: lullabyTexts[lang],
         model_id: "eleven_multilingual_v2",
-        voice_settings: { 
-          stability: 0.8,
-          similarity_boost: 0.5,
-          style: 0.0,
-          use_speaker_boost: true
-        }
+        voice_settings: { stability: 0.8, similarity_boost: 0.5, style: 0.0, use_speaker_boost: true }
       })
     });
 
-    if (!ttsRes.ok) {
-      const ttsError = await ttsRes.json();
-      return res.status(ttsRes.status).json(ttsError);
-    }
+    if (!ttsRes.ok) return res.status(ttsRes.status).json(await ttsRes.json());
 
     const resultAudio = await ttsRes.arrayBuffer();
     res.setHeader('Content-Type', 'audio/mpeg');
