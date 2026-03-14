@@ -25,7 +25,7 @@
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 8곡을 위한 스크롤 영역 */
+        /* 8곡 트랙 리스트 스크롤 영역 */
         .track-list { max-height: 420px; overflow-y: auto; padding-right: 5px; }
         .track-list::-webkit-scrollbar { width: 4px; }
         .track-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -50,7 +50,8 @@
         .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
         
-        #status-text { margin-top: 20px; font-size: 0.9rem; color: #a29bfe; text-align: center; }
+        /* 🔥 상태 메시지 스타일: 버튼 아래 정렬 */
+        #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -73,44 +74,22 @@
 
         <div id="basic-mode" class="content-section active">
             <div class="track-list">
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm1-t">따뜻한 별빛 오르골</h3><p id="bgm1-d">마음을 진정시키는 잔잔한 멜로디</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm2-t">태엽 인형의 꿈</h3><p id="bgm2-d">포근한 안도감을 주는 맑은 오르골</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm3-t">어쿠스틱 숲속 산책</h3><p id="bgm3-d">기타 선율과 함께하는 요정들의 자장가</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm4-t">반짝반짝 별빛 꿈결</h3><p id="bgm4-d">영롱하고 신비로운 멜로디</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm4.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm5-t">반짝반짝 작은 별</h3><p id="bgm5-d">밤하늘의 은하수를 수놓는 세계적인 자장가</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm5.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm6-t">바이스바흐 자장가</h3><p id="bgm6-d">우아하고 품격 있는 클래식 선율</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm6.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm7-t">단디니 단디니 (Dandini)</h3><p id="bgm7-d">터키 엄마들이 가장 사랑하는 국민 자장가</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm7.mp3')">▶</button>
-                </div>
-                <div class="track-card">
-                    <div class="track-info"><h3 id="bgm8-t">포근한 닌니 (Ninni)</h3><p id="bgm8-d">지중해의 따뜻함을 담은 터키의 노래</p></div>
-                    <button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button>
-                </div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm1-t">따뜻한 별빛 오르골</h3><p id="bgm1-d">마음을 진정시키는 잔잔한 멜로디</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm2-t">태엽 인형의 꿈</h3><p id="bgm2-d">포근한 안도감을 주는 맑은 오르골</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm3-t">어쿠스틱 숲속 산책</h3><p id="bgm3-d">기타 선율과 함께하는 요정들의 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm4-t">반짝반짝 별빛 꿈결</h3><p id="bgm4-d">영롱하고 신비로운 멜로디</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm4.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm5-t">반짝반짝 작은 별</h3><p id="bgm5-d">밤하늘의 은하수를 수놓는 세계적인 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm5.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm6-t">바이스바흐 자장가</h3><p id="bgm6-d">우아하고 품격 있는 클래식 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm6.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm7-t">단디니 단디니 (Dandini)</h3><p id="bgm7-d">터키 엄마들이 가장 사랑하는 국민 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm7.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm8-t">포근한 닌니 (Ninni)</h3><p id="bgm8-d">지중해의 따뜻함을 담은 터키의 노래</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button></div>
             </div>
         </div>
 
         <div id="ai-mode" class="content-section ai-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
+            
+            <p id="status-text"></p>
         </div>
 
         <div class="common-controls">
@@ -118,14 +97,8 @@
 
             <div class="premium-panel">
                 <div class="panel-title" id="mixer-title">🎚️ 실시간 볼륨 믹서</div>
-                <div class="slider-group">
-                    <label id="vol-bgm-label">배경 음악 볼륨 (BGM)</label>
-                    <input type="range" id="bgmVol" min="0" max="1" step="0.1" value="0.2" oninput="updateVolume()">
-                </div>
-                <div class="slider-group">
-                    <label id="vol-voice-label">엄마 목소리 볼륨 (Voice)</label>
-                    <input type="range" id="voiceVol" min="0" max="1" step="0.1" value="1.0" oninput="updateVolume()">
-                </div>
+                <div class="slider-group"><label id="vol-bgm-label">배경 음악 볼륨 (BGM)</label><input type="range" id="bgmVol" min="0" max="1" step="0.1" value="0.2" oninput="updateVolume()"></div>
+                <div class="slider-group"><label id="vol-voice-label">엄마 목소리 볼륨 (Voice)</label><input type="range" id="voiceVol" min="0" max="1" step="0.1" value="1.0" oninput="updateVolume()"></div>
             </div>
 
             <div class="premium-panel">
@@ -137,7 +110,6 @@
                 </div>
                 <p id="timer-display" style="font-size: 0.8rem; color: #ff7675; margin-top: 12px; min-height: 1rem; text-align: center;"></p>
             </div>
-            <p id="status-text"></p>
         </div>
     </div>
 
@@ -166,7 +138,7 @@
             title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
-            bgm2t: "Clockwork Dream", bgm2d: "Clear and comforting sounds",
+            bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
             bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
             bgm4t: "Twinkling Starry Dreams", bgm4d: "Mystical and bright melodies",
             bgm5t: "Twinkle Twinkle Little Star", bgm5d: "A world-famous melody that lights up the sky",
@@ -186,7 +158,7 @@
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
             bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik ve parlak melodiler",
             bgm5t: "Işıl Işıl Yıldız", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
-            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif ve sofistike klasik bir melodi",
+            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif 및 sofistike klasik bir melodi",
             bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
             bgm8t: "Ninni (Sıcak Melodi)", bgm8d: "Akdeniz esintili sıcacık bir Türk ninnisi",
             record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
@@ -208,13 +180,10 @@
         document.getElementById('sub-title').innerText = d.sub;
         document.getElementById('tab-1').innerText = d.tab1;
         document.getElementById('tab-2').innerText = d.tab2;
-        
-        // bgm 1부터 8까지 업데이트
         for(let i = 1; i <= 8; i++) {
             document.getElementById(`bgm${i}-t`).innerText = d[`bgm${i}t`];
             document.getElementById(`bgm${i}-d`).innerText = d[`bgm${i}d`];
         }
-
         document.getElementById('recordBtn').innerText = d.record;
         document.getElementById('stopBtn').innerText = d.stop;
         document.getElementById('mixer-title').innerText = d.mixer;
@@ -243,9 +212,8 @@
     function togglePlay(btn, src) {
         const bgmPlayer = document.getElementById('audio-player');
         const voicePlayer = document.getElementById('voice-player');
-        voicePlayer.pause(); 
+        voicePlayer.pause(); 
         selectedBgmSrc = src;
-
         if (currentBtn === btn && !bgmPlayer.paused) {
             bgmPlayer.pause();
             btn.innerText = '▶';
@@ -261,10 +229,7 @@
         document.getElementById('stopBtn').style.display = 'block';
     }
 
-    function resetPlayButtons() {
-        document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; });
-    }
-
+    function resetPlayButtons() { document.querySelectorAll('.play-btn').forEach(b => { b.innerText = '▶'; }); }
     function updateVolume() {
         document.getElementById('audio-player').volume = document.getElementById('bgmVol').value;
         document.getElementById('voice-player').volume = document.getElementById('voiceVol').value;
@@ -275,7 +240,6 @@
         document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById('timer-display').innerText = `${mins}${langData[currentLang].tMsg}`;
-        
         timerId = setTimeout(() => {
             stopBothAudios();
             document.getElementById('timer-display').innerText = "Zzz...";
@@ -295,32 +259,29 @@
 
     let mediaRecorder;
     let audioChunks = [];
-
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
-        const stopBtn = document.getElementById('stopBtn');
         const status = document.getElementById('status-text');
-        const bgmPlayer = document.getElementById('audio-player'); 
-        const voicePlayer = document.getElementById('voice-player'); 
-
+        const bgmPlayer = document.getElementById('audio-player'); 
+        const voicePlayer = document.getElementById('voice-player'); 
         if (btn.innerText.includes(langData[currentLang].record.split(' ')[0])) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
-                stopBothAudios(); 
+                stopBothAudios(); 
                 mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 mediaRecorder.onstop = async () => {
                     btn.disabled = true;
                     status.innerText = langData[currentLang].statusGen;
                     const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    const response = await fetch('/api/clone', { 
-                        method: 'POST', 
+                    const response = await fetch('/api/clone', { 
+                        method: 'POST', 
                         headers: { 'x-lang': currentLang },
-                        body: audioBlob 
+                        body: audioBlob 
                     });
                     if (response.ok) {
-                        bgmPlayer.src = selectedBgmSrc; 
+                        bgmPlayer.src = selectedBgmSrc; 
                         bgmPlayer.volume = document.getElementById('bgmVol').value;
                         const resBlob = await response.blob();
                         voicePlayer.src = URL.createObjectURL(resBlob);
@@ -328,7 +289,7 @@
                         bgmPlayer.play();
                         voicePlayer.play();
                         status.innerText = "✨";
-                        stopBtn.style.display = 'block'; 
+                        document.getElementById('stopBtn').style.display = 'block'; 
                     }
                     btn.disabled = false;
                     btn.innerText = langData[currentLang].record;
