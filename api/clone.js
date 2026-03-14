@@ -1,49 +1,44 @@
 import { Buffer } from 'buffer';
-
-export const config = {
-  api: { bodyParser: false },
-};
+export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
   const apiKey = process.env.ELEVENLABS_API_KEY;
-  // 형님이 주신 '무조건 성공하는' 목소리 ID
   const FIXED_VOICE_ID = "0oqpliV6dVSr9XomngOW"; 
 
   try {
-    // 1. 녹음 데이터는 일단 받지만, 복제(Cloning)는 건너뜁니다! (에러 원천 차단)
-    const chunks = [];
-    for await (const chunk of req) { chunks.push(chunk); }
+    // 1. 일레븐랩스야, 내 열쇠 권한 진짜 뭐야? (로그 확인용)
+    const userRes = await fetch('https://api.elevenlabs.io/v1/user', {
+      headers: { 'xi-api-key': apiKey }
+    });
+    const userData = await userRes.json();
+    console.log("👤 내 계정 등급:", userData.subscription?.tier || "모름");
 
-    console.log("🚀 복제 공정 건너뜀! 고정 ID로 자장가 생성 시작...");
-
-    // 2. 바로 자장가 생성 (TTS) 공정으로 직행
+    // 2. 가장 기본 모델(v1)로 시도해서 권한 뚫어보기
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${FIXED_VOICE_ID}`, {
       method: 'POST',
       headers: {
         'xi-api-key': apiKey,
-        'Content-Type': 'application/json',
-        'Accept': 'audio/mpeg'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        text: "우리 아기 예쁜 아기, 엄마가 항상 지켜줄게. 코장코장 잘 자렴.",
-        model_id: "eleven_multilingual_v2"
+        text: "우리 아기 예쁜 아기, 엄마가 항상 지켜줄게.",
+        model_id: "eleven_monolingual_v1" // 더 가벼운 모델로 변경
       })
     });
 
+    const data = await ttsRes.json();
+
     if (!ttsRes.ok) {
-      const errorData = await ttsRes.json();
-      console.error('🔥 TTS 에러:', JSON.stringify(errorData));
-      return res.status(ttsRes.status).json(errorData);
+      // ❌ 여기서 에러나면 일레븐랩스 사이트에서 'Permissions' 확인이 필수입니다!
+      console.error('🔥 진짜 에러 이유:', JSON.stringify(data));
+      return res.status(ttsRes.status).json(data);
     }
 
     const resultAudio = await ttsRes.arrayBuffer();
-    
-    // 3. 완성된 자장가 파일을 앱으로 전송
     res.setHeader('Content-Type', 'audio/mpeg');
     res.send(Buffer.from(resultAudio));
 
   } catch (error) {
-    console.error('💻 서버 에러:', error.message);
     res.status(500).json({ error: error.message });
   }
 }
