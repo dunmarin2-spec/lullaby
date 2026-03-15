@@ -8,6 +8,18 @@ export const config = {
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
 export default async function handler(req, res) {
+  // 🚨 [여기가 핵심!] 안드로이드 앱의 접근을 허용하는 문지기(CORS) 설정 🚨
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-lang');
+
+  // 앱이 "파일 보내도 돼?" 하고 노크(OPTIONS)할 때 "응 보내!" 하고 대답해주는 부분
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  // ----------------------------------------------------------------------
+
   const apiKey = process.env.ELEVENLABS_API_KEY;
   const lang = req.headers['x-lang'] || 'ko';
 
