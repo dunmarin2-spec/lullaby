@@ -290,7 +290,7 @@
                 
                 mediaRecorder.onstop = async () => {
                     btn.disabled = true;
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     
                     let success = false;
                     let retryCount = 0;
