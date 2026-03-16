@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 
     const formData = new FormData();
     formData.append('name', `Voice_${lang}_${Date.now()}`); 
-    formData.append('files', new Blob([audioBuffer], { type: 'audio/mpeg' }), 'rec.mp3');
+    formData.append('files', new Blob([audioBuffer], { type: 'audio/webm' }), 'rec.webm');
 
     const addVoiceRes = await fetch('https://api.elevenlabs.io/v1/voices/add', {
       method: 'POST',
