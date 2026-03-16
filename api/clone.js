@@ -4,21 +4,19 @@ export const config = {
   api: { bodyParser: false },
 };
 
-// 🔥 [추가] 무작위 지연 함수: 요청이 한꺼번에 몰리는 것을 방지합니다.
+// 🔥 무작위 지연 함수: 요청이 한꺼번에 몰리는 것을 방지합니다.
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
 export default async function handler(req, res) {
-  // 🚨 [여기가 핵심!] 안드로이드 앱의 접근을 허용하는 문지기(CORS) 설정 🚨
+  // 🚨 안드로이드 앱의 접근을 허용하는 문지기(CORS) 설정 🚨
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-lang');
 
-  // 앱이 "파일 보내도 돼?" 하고 노크(OPTIONS)할 때 "응 보내!" 하고 대답해주는 부분
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
-  // ----------------------------------------------------------------------
 
   const apiKey = process.env.ELEVENLABS_API_KEY;
   const lang = req.headers['x-lang'] || 'ko';
@@ -30,24 +28,11 @@ export default async function handler(req, res) {
   };
 
   try {
-    // 1️⃣ [추가] 0~2초 사이의 무작위 지연을 주어 동시 접속 요청을 분산시킵니다.
     await sleep(Math.random() * 2000);
 
-    const voicesRes = await fetch("https://api.elevenlabs.io/v1/voices", {
-      headers: { "xi-api-key": apiKey },
-    });
-    const voicesData = await voicesRes.json();
-    const customVoices = voicesData.voices.filter(v => v.category === 'cloned');
+    // ❌ [삭제됨] 예전에 있던 "목소리 9개 넘는지 검사하고 지우는 로직"은 통째로 날렸습니다! (속도 대폭 향상)
 
-    if (customVoices.length >= 9) {
-      const oldestVoiceId = customVoices[0].voice_id;
-      // 2️⃣ [수정] 삭제 요청 시 .catch()를 붙여 이미 삭제된 경우에도 다음 단계로 넘어가게 합니다.
-      await fetch(`https://api.elevenlabs.io/v1/voices/${oldestVoiceId}`, {
-        method: "DELETE",
-        headers: { "xi-api-key": apiKey },
-      }).catch(err => console.log("이미 삭제된 목소리이거나 에러 발생, 무시하고 진행합니다."));
-    }
-
+    // 스마트폰에서 온 녹음 파일 받기
     const chunks = [];
     for await (const chunk of req) { chunks.push(chunk); }
     const audioBuffer = Buffer.concat(chunks);
@@ -56,6 +41,7 @@ export default async function handler(req, res) {
     formData.append('name', `Voice_${lang}_${Date.now()}`); 
     formData.append('files', new Blob([audioBuffer], { type: 'audio/webm' }), 'rec.webm');
 
+    // 1️⃣ 일레븐랩스에 목소리 추가 (작업대 하나 빌리기)
     const addVoiceRes = await fetch('https://api.elevenlabs.io/v1/voices/add', {
       method: 'POST',
       headers: { 'xi-api-key': apiKey },
@@ -64,31 +50,45 @@ export default async function handler(req, res) {
 
     const addData = await addVoiceRes.json();
     
-    // 3️⃣ [추가] 슬롯이 꽉 차서 생성이 안 될 경우 클라이언트에 429(재시도 요청)를 보냅니다.
     if (!addVoiceRes.ok) {
       return res.status(429).json({ error: "Server Busy", detail: addData });
     }
 
-    const newVoiceId = addData.voice_id;
-    const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${newVoiceId}`, {
-      method: 'POST',
-      headers: {
-        'xi-api-key': apiKey,
-        'Content-Type': 'application/json',
-        'Accept': 'audio/mpeg'
-      },
-      body: JSON.stringify({
-        text: lullabyTexts[lang],
-        model_id: "eleven_multilingual_v2",
-        voice_settings: { stability: 0.8, similarity_boost: 0.5, style: 0.0, use_speaker_boost: true }
-      })
-    });
+    const newVoiceId = addData.voice_id; // 빌린 작업대 번호
+    let resultAudioBuffer;
 
-    if (!ttsRes.ok) return res.status(ttsRes.status).json(await ttsRes.json());
+    // 🚨 [핵심! 치고 빠지기 로직]
+    try {
+      // 2️⃣ 자장가(TTS) 오디오 생성
+      const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${newVoiceId}`, {
+        method: 'POST',
+        headers: {
+          'xi-api-key': apiKey,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: lullabyTexts[lang],
+          model_id: "eleven_multilingual_v2",
+          voice_settings: { stability: 0.8, similarity_boost: 0.5, style: 0.0, use_speaker_boost: true }
+        })
+      });
 
-    const resultAudio = await ttsRes.arrayBuffer();
+      if (!ttsRes.ok) return res.status(ttsRes.status).json(await ttsRes.json());
+      
+      resultAudioBuffer = await ttsRes.arrayBuffer(); // 만들어진 자장가 파일 챙기기
+
+    } finally {
+      // 3️⃣ 자장가를 무사히 만들었든 에러가 났든, 빌렸던 작업대(목소리)는 즉시 삭제 후 반납!
+      await fetch(`https://api.elevenlabs.io/v1/voices/${newVoiceId}`, {
+        method: "DELETE",
+        headers: { "xi-api-key": apiKey }
+      }).catch(err => console.log("목소리 삭제 실패(무시)"));
+    }
+
+    // 4️⃣ 유저 스마트폰으로 완성된 자장가 쏴주기
     res.setHeader('Content-Type', 'audio/mpeg');
-    res.send(Buffer.from(resultAudio));
+    res.send(Buffer.from(resultAudioBuffer));
 
   } catch (error) {
     res.status(500).json({ error: error.message });
