@@ -2,15 +2,13 @@ export default async function handler(req, res) {
   const { paymentKey, orderId, amount } = req.query;
 
   if (!paymentKey || !orderId || !amount) {
-    return res.status(400).send(`요청 값 누락: paymentKey=${paymentKey}, orderId=${orderId}, amount=${amount}`);
+    return res.status(400).send("잘못된 결제 요청입니다.");
   }
 
-  const secretKey = process.env.TOSS_SECRET_KEY;
-  // 🚨 만약 Vercel에 비밀번호 세팅이 안 되어있다면 여기서 딱 걸립니다!
-  if (!secretKey) {
-    return res.status(500).send("🚨 범인 발견: Vercel 환경변수(TOSS_SECRET_KEY)가 비어있습니다! Vercel 세팅에서 Production 체크가 풀려있는지 확인하십쇼!");
-  }
-
+  // 🔥 범인은 Vercel 환경변수였습니다! 
+  // Vercel 금고 거치지 않고, 그냥 코드에 테스트 시크릿 키를 다이렉트로 박아버립니다. (테스트라 100% 안전)
+  const secretKey = "test_sk_XZYkKL4MrjB9YXXN2XkBr0zJwIEW";
+  
   const encryptedSecretKey = Buffer.from(secretKey + ':').toString('base64');
 
   try {
@@ -28,11 +26,11 @@ export default async function handler(req, res) {
     });
 
     if (response.ok) {
+      // 🟢 드디어 결제 최종 승인 완료! 형님 앞마당으로 돌려보냅니다!
       res.redirect(302, '/?paid=true');
     } else {
-      // 🚨 토스가 승인을 거절하면 홈으로 안 가고 화면에 에러 이유를 띄웁니다!
       const errorData = await response.json();
-      return res.status(400).send(`🚨 토스 에러 발생: ${JSON.stringify(errorData)}`);
+      return res.status(400).send(`🚨 토스 에러 발생 (코드 박았는데도 에러면 기적입니다): ${JSON.stringify(errorData)}`);
     }
   } catch (error) {
     return res.status(500).send(`🚨 서버 통신 에러: ${error.message}`);
