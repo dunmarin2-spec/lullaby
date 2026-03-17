@@ -1,8 +1,12 @@
-<!DOCTYPE html><html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>엄마 품 자장가 - Global Premium</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2629571086002389" crossorigin="anonymous"></script>
+    <script src="https://js.tosspayments.com/v1/payment"></script>
     <style>
         :root { --primary: #6c5ce7; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ff7675; }
         body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; }
@@ -51,7 +55,9 @@
         
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
         .guide-box { background: rgba(108, 92, 231, 0.1); border: 1px dashed rgba(108, 92, 231, 0.3); color: #a29bfe; font-size: 0.8rem; line-height: 1.5; text-align: center; margin-bottom: 20px; padding: 12px; border-radius: 15px; }
-    </style></head><body>
+    </style>
+</head>
+<body>
     <div class="app-container">
         <div class="lang-selector" translate="no">
             <button class="lang-btn active" onclick="changeLang('ko', this)">KO</button>
@@ -115,62 +121,13 @@
     <audio id="voice-player" loop></audio>
 
 <script>
-    // 1. 전면 광고 실행 함수
-    async function showInterstitialAd() {
-        const statusEl = document.getElementById('status-text'); 
-        try {
-            const AdMob = window.Capacitor?.Plugins?.AdMob || window.CapacitorCommunityAdmob?.AdMob;
-            if (!AdMob) return;
+    // 기존에 있던 쓸데없는 애드몹(AdMob) 함수들은 시원하게 날렸습니다!
 
-            await AdMob.initialize();
-            
-            // 전면 광고 장전 (테스트 ID)
-            await AdMob.prepareInterstitial({
-                adId: 'ca-app-pub-2629571086002389/2858710278' 
-            });
-
-            // 전면 광고 발사!
-            await AdMob.showInterstitial();
-        } catch (e) {
-            console.log('🚨 전면 에러:', e.message);
-        }
-    }
-
-    // 2. 하단 배너 광고 실행 함수
-    async function showBannerAd() {
-        try {
-            const AdMob = window.Capacitor?.Plugins?.AdMob || window.CapacitorCommunityAdmob?.AdMob;
-            if (!AdMob) return;
-
-            await AdMob.showBanner({
-                adId: 'ca-app-pub-2629571086002389/4053739420', 
-                adSize: 'BANNER',
-                position: 'BOTTOM_CENTER',
-                margin: 0
-            });
-            console.log("💳 하단 배너 가동!");
-        } catch (e) {
-            console.log('🚨 배너 에러:', e.message);
-        }
-    }
-
-    // 3. 앱 켜지자마자 실행
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            showInterstitialAd();
-            showBannerAd();      
-        }, 1500);
-    });
-
-    // ---------------------------------------------------------
-    // 🛠️ [형님의 원래 로직] - 자장가 10곡 + 모든 기능 100% 복구
-    // ---------------------------------------------------------
     const langData = {
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
             mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
-            // 🚨 한국어 문구 교체
             aiInfo: '따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요',
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
@@ -192,7 +149,6 @@
             title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
             mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
-            // 🚨 영어 문구 교체
             aiInfo: 'Please repeat: "My sweet baby, my lovely child. Mommy will always protect you." Speak slowly and gently.',
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
             bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
@@ -214,7 +170,6 @@
             title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
             tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
             mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kaydı başlatın.",
-            // 🚨 터키어 문구 교체
             aiInfo: 'Lütfen tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak." Yavaşça ve yumuşak bir sesle konuşun.',
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
             bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
@@ -324,46 +279,79 @@
         resetPlayButtons();
     }
 
+    // 🔥 교체된 결제 함수: 버튼을 누르면 이 함수가 가장 먼저 실행됩니다! 🔥
     async function handleRecord() {
+        const btn = document.getElementById('recordBtn');
+        const status = document.getElementById('status-text');
+
+        if (!isRecording) {
+            try {
+                const tossPayments = TossPayments("test_ck_PBal2vxj814WAjp121gkr5RQgOAN"); 
+                
+                status.innerText = "결제창을 불러오는 중...";
+                btn.disabled = true;
+
+                await tossPayments.requestPayment('카드', {
+                    amount: 1000, 
+                    orderId: 'ORDER_' + new Date().getTime(), 
+                    orderName: '엄마 품 자장가 1회 이용권',
+                    successUrl: window.location.origin + '/api/payment/success', 
+                    failUrl: window.location.origin + '/', 
+                });
+                return; 
+            } catch (e) {
+                btn.disabled = false;
+                if (e.code === 'USER_CANCEL') {
+                    status.innerText = "결제를 취소하셨습니다.";
+                } else {
+                    status.innerText = "결제 에러: " + e.message;
+                }
+                return;
+            }
+        } else { 
+            if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); 
+        }
+    }
+
+    async function startRealRecording() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
         const bgmPlayer = document.getElementById('audio-player'); 
         const voicePlayer = document.getElementById('voice-player'); 
 
-        if (!isRecording) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true } });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                stopBothAudios(); 
-                mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
-                mediaRecorder.onstop = async () => {
-                    if (audioChunks.length === 0) return;
-                    btn.disabled = true;
-                    status.innerText = langData[currentLang].statusGen;
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                    try {
-                        // 🚨 가장 중요했던 Vercel 절대 경로 복구 완료!
-                        const response = await fetch('https://lullaby-six.vercel.app/api/clone', { 
-                            method: 'POST', headers: { 'x-lang': currentLang }, body: audioBlob 
-                        });
-                        if (response.ok) {
-                            const resBlob = await response.blob();
-                            voicePlayer.src = URL.createObjectURL(resBlob);
-                            bgmPlayer.src = selectedBgmSrc;
-                            bgmPlayer.volume = document.getElementById('bgmVol').value;
-                            voicePlayer.volume = document.getElementById('voiceVol').value;
-                            bgmPlayer.play(); voicePlayer.play();
-                            status.innerText = "✨"; document.getElementById('stopBtn').style.display = 'block'; 
-                        } else { status.innerText = "❌"; }
-                    } catch (e) { status.innerText = "❌ 통신 에러"; }
-                    btn.disabled = false; isRecording = false; btn.innerText = langData[currentLang].record;
-                };
-                mediaRecorder.start(); isRecording = true;
-                btn.innerText = currentLang === 'ko' ? "🛑 정지" : "🛑 STOP";
-                status.innerText = langData[currentLang].statusRec;
-                setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
-            } catch (err) { alert("에러: " + err.message); }
-        } else { if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); }
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true } });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            stopBothAudios(); 
+            mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
+            mediaRecorder.onstop = async () => {
+                if (audioChunks.length === 0) return;
+                btn.disabled = true;
+                status.innerText = langData[currentLang].statusGen;
+                const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                try {
+                    const response = await fetch('https://lullaby-six.vercel.app/api/clone', { 
+                        method: 'POST', headers: { 'x-lang': currentLang }, body: audioBlob 
+                    });
+                    if (response.ok) {
+                        const resBlob = await response.blob();
+                        voicePlayer.src = URL.createObjectURL(resBlob);
+                        bgmPlayer.src = selectedBgmSrc;
+                        bgmPlayer.volume = document.getElementById('bgmVol').value;
+                        voicePlayer.volume = document.getElementById('voiceVol').value;
+                        bgmPlayer.play(); voicePlayer.play();
+                        status.innerText = "✨"; document.getElementById('stopBtn').style.display = 'block'; 
+                    } else { status.innerText = "❌"; }
+                } catch (e) { status.innerText = "❌ 통신 에러"; }
+                btn.disabled = false; isRecording = false; btn.innerText = langData[currentLang].record;
+            };
+            mediaRecorder.start(); isRecording = true;
+            btn.innerText = currentLang === 'ko' ? "🛑 정지" : "🛑 STOP";
+            status.innerText = langData[currentLang].statusRec;
+            setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
+        } catch (err) { alert("에러: " + err.message); }
     }
-</script></body></html>
+</script>
+</body>
+</html>
