@@ -13,13 +13,6 @@ export default async function handler(req, res) {
   const replicateToken = process.env.REPLICATE_API_TOKEN;
   const lang = req.headers['x-lang'] || 'ko';
 
-  // 🕵️ 로그 진단 1: 토큰이 들어있는지 확인
-  if (!replicateToken) {
-    console.error("🚨 [ERROR] REPLICATE_API_TOKEN이 없습니다! Vercel 설정을 확인하세요.");
-  } else {
-    console.log(`✅ [INFO] 토큰 감지됨 (앞 3글자: ${replicateToken.substring(0, 3)}...)`);
-  }
-
   const lullabyTexts = {
     ko: "우리 아기... 예쁜 아기... 엄마가 항상 지켜줄게... 자장, 자장... 우리 아기... 코오, 자자.",
     en: "My sweet baby... My lovely child... Mommy will always protect you... Sleep tight, my dear... Close your eyes... and go to sleep.",
@@ -32,14 +25,14 @@ export default async function handler(req, res) {
     const audioBuffer = Buffer.concat(chunks);
     const base64Audio = `data:application/octet-stream;base64,${audioBuffer.toString('base64')}`;
 
-    const startResponse = await fetch("https://api.replicate.com/v1/predictions", {
+    // 🚀 [핵심 변경] version 숫자 대신 모델 경로를 직접 사용합니다.
+    const startResponse = await fetch("https://api.replicate.com/v1/models/lucataco/xtts-v2/predictions", {
       method: "POST",
       headers: {
         "Authorization": `Token ${replicateToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        version: "6b16e4549f64923e38712a6f20b3272d1748f21908dfdf649e4d580f4f727690",
         input: {
           text: lullabyTexts[lang],
           language: lang,
@@ -51,10 +44,9 @@ export default async function handler(req, res) {
 
     const prediction = await startResponse.json();
     
-    // 🕵️ 로그 진단 2: Replicate의 실제 응답 전체 출력
     if (!prediction.id) {
-      console.error("🚨 [REPLICATE RAW ERROR]:", JSON.stringify(prediction));
-      throw new Error(`Replicate 요청 실패: ${prediction.detail || "권한 문제"}`);
+      console.error("AI 응답 에러:", JSON.stringify(prediction));
+      throw new Error(`AI 호출 실패: ${prediction.detail || "권한 문제"}`);
     }
 
     const predictionId = prediction.id;
