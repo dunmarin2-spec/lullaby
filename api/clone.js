@@ -13,6 +13,13 @@ export default async function handler(req, res) {
   const replicateToken = process.env.REPLICATE_API_TOKEN;
   const lang = req.headers['x-lang'] || 'ko';
 
+  // 🕵️ 로그 진단 1: 토큰이 들어있는지 확인
+  if (!replicateToken) {
+    console.error("🚨 [ERROR] REPLICATE_API_TOKEN이 없습니다! Vercel 설정을 확인하세요.");
+  } else {
+    console.log(`✅ [INFO] 토큰 감지됨 (앞 3글자: ${replicateToken.substring(0, 3)}...)`);
+  }
+
   const lullabyTexts = {
     ko: "우리 아기... 예쁜 아기... 엄마가 항상 지켜줄게... 자장, 자장... 우리 아기... 코오, 자자.",
     en: "My sweet baby... My lovely child... Mommy will always protect you... Sleep tight, my dear... Close your eyes... and go to sleep.",
@@ -25,7 +32,6 @@ export default async function handler(req, res) {
     const audioBuffer = Buffer.concat(chunks);
     const base64Audio = `data:application/octet-stream;base64,${audioBuffer.toString('base64')}`;
 
-    // 3. Replicate API 호출 (최신 버전 해시로 교체)
     const startResponse = await fetch("https://api.replicate.com/v1/predictions", {
       method: "POST",
       headers: {
@@ -33,7 +39,6 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // 👈 안정적인 XTTS-v2 최신 버전으로 교체했습니다.
         version: "6b16e4549f64923e38712a6f20b3272d1748f21908dfdf649e4d580f4f727690",
         input: {
           text: lullabyTexts[lang],
@@ -46,18 +51,17 @@ export default async function handler(req, res) {
 
     const prediction = await startResponse.json();
     
-    // 만약 여기서 "not permitted" 에러가 나면 무조건 카드 등록 문제입니다.
+    // 🕵️ 로그 진단 2: Replicate의 실제 응답 전체 출력
     if (!prediction.id) {
-      console.error("Replicate Error Detail:", prediction);
-      throw new Error(`Replicate 요청 실패: ${prediction.detail || "카드 등록 확인 필요"}`);
+      console.error("🚨 [REPLICATE RAW ERROR]:", JSON.stringify(prediction));
+      throw new Error(`Replicate 요청 실패: ${prediction.detail || "권한 문제"}`);
     }
 
     const predictionId = prediction.id;
     let currentPrediction = prediction;
 
-    // 4. 결과 대기 (최대 45초까지 대기)
     let retryCount = 0;
-    while (currentPrediction.status !== "succeeded" && currentPrediction.status !== "failed" && retryCount < 30) {
+    while (currentPrediction.status !== "succeeded" && currentPrediction.status !== "failed" && retryCount < 40) {
       await sleep(1500); 
       const checkRes = await fetch(`https://api.replicate.com/v1/predictions/${predictionId}`, {
         headers: { "Authorization": `Token ${replicateToken}` }
@@ -66,9 +70,8 @@ export default async function handler(req, res) {
       retryCount++;
     }
 
-    if (currentPrediction.status === "failed") throw new Error("AI 생성 실패");
+    if (currentPrediction.status === "failed") throw new Error("AI 생성 실패: " + JSON.stringify(currentPrediction.error));
 
-    // 5. 결과 오디오 전송
     const audioRes = await fetch(currentPrediction.output);
     const resultBuffer = await audioRes.arrayBuffer();
 
@@ -76,7 +79,7 @@ export default async function handler(req, res) {
     res.send(Buffer.from(resultBuffer));
 
   } catch (error) {
-    console.error("Fatal Error:", error);
+    console.error("🔥 최종 에러:", error.message);
     res.status(500).json({ error: error.message });
   }
 }
