@@ -1,17 +1,19 @@
 export default async function handler(req, res) {
-  // 1. 손님이 들고 온 영수증 데이터 꺼내기
   const { paymentKey, orderId, amount } = req.query;
 
   if (!paymentKey || !orderId || !amount) {
-    return res.status(400).send("잘못된 결제 요청입니다.");
+    return res.status(400).send(`요청 값 누락: paymentKey=${paymentKey}, orderId=${orderId}, amount=${amount}`);
   }
 
-  // 2. Vercel 금고에 숨겨둔 형님의 시크릿 키 꺼내기
   const secretKey = process.env.TOSS_SECRET_KEY;
+  // 🚨 만약 Vercel에 비밀번호 세팅이 안 되어있다면 여기서 딱 걸립니다!
+  if (!secretKey) {
+    return res.status(500).send("🚨 범인 발견: Vercel 환경변수(TOSS_SECRET_KEY)가 비어있습니다! Vercel 세팅에서 Production 체크가 풀려있는지 확인하십쇼!");
+  }
+
   const encryptedSecretKey = Buffer.from(secretKey + ':').toString('base64');
 
   try {
-    // 3. 토스 서버에 승인 요청 (API 통신)
     const response = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
       method: 'POST',
       headers: {
@@ -21,22 +23,18 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         paymentKey: paymentKey,
         orderId: orderId,
-        // 🔥 여기가 문제였습니다! 글자를 숫자로 확실하게 변환! 🔥
-        amount: Number(amount), 
+        amount: Number(amount),
       }),
     });
 
     if (response.ok) {
-      // 🟢 결제 최종 승인 완료! (성공 꼬리표 달고 메인으로)
       res.redirect(302, '/?paid=true');
     } else {
-      // 🔴 결제 실패 (에러 이유 로그로 남기고 실패 꼬리표 달기)
+      // 🚨 토스가 승인을 거절하면 홈으로 안 가고 화면에 에러 이유를 띄웁니다!
       const errorData = await response.json();
-      console.error("결제 승인 실패 이유:", errorData);
-      res.redirect(302, '/?paid=false');
+      return res.status(400).send(`🚨 토스 에러 발생: ${JSON.stringify(errorData)}`);
     }
   } catch (error) {
-    console.error("서버 통신 에러:", error);
-    res.redirect(302, '/?paid=false');
+    return res.status(500).send(`🚨 서버 통신 에러: ${error.message}`);
   }
 }
