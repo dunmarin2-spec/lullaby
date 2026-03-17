@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   const lang = req.headers['x-lang'] || 'ko';
 
   const lullabyTexts = {
-    ko: "우리 아기... 예쁜 아기... 엄마가 항상 지켜줄게... 자장, 자장... 우리 아기... 코오, 자자.",
+    ko: "우리.. 아기.... 예쁜.. 아기.... 엄마가.. 항상.. 지켜줄게.... 자장.. 자장.... 우리.. 아기.... 코오.. 자자....",
     en: "My sweet baby... My lovely child... Mommy will always protect you... Sleep tight, my dear... Close your eyes... and go to sleep.",
     tr: "Canım bebeğim... Tatlı yavrum... Annen seni her zaman koruyacak... Ninni, ninni... Hadi uyu bebeğim... tatlı rüyalar gör."
   };
