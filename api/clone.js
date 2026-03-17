@@ -13,12 +13,11 @@ export default async function handler(req, res) {
   const replicateToken = process.env.REPLICATE_API_TOKEN;
   const lang = req.headers['x-lang'] || 'ko';
 
-  // 1. 텍스트 뒤에 아주 긴 마침표 세례를 퍼부어 '강제 침묵'을 만듭니다.
-  // 마침표 하나당 미세한 정적이 생기는데, 이걸 길게 붙여서 약 3~5초의 여백을 확보합니다.
+  // 1. "음" 소리 제거! 텍스트는 아주 깨끗하게 유지합니다.
   const lullabyTexts = {
-    ko: "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게. 자장 자장 우리 아기, 이제 코오 자자.......................... ",
-    en: "My sweet baby, my lovely child. Mommy will always protect you. Sleep tight, my dear, now go to sleep.......................... ",
-    tr: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak. Ninni ninni bebeğim, hadi uyu artık.......................... "
+    ko: "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게. 자장 자장 우리 아기, 이제 코오 자자.",
+    en: "My sweet baby, my lovely child. Mommy will always protect you. Sleep tight, my dear, now go to sleep.",
+    tr: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak. Ninni ninni bebeğim, hadi uyu artık."
   };
 
   try {
@@ -39,7 +38,7 @@ export default async function handler(req, res) {
           text: lullabyTexts[lang],
           language: lang,
           speaker: base64Audio,
-          speed: 0.88, // 퐁비님이 원하셨던 약간 느린 속도 유지
+          speed: 0.88, // 나긋나긋한 속도
           cleanup_voice: false 
         }
       })
