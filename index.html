@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +52,9 @@
         
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
         .guide-box { background: rgba(108, 92, 231, 0.1); border: 1px dashed rgba(108, 92, 231, 0.3); color: #a29bfe; font-size: 0.8rem; line-height: 1.5; text-align: center; margin-bottom: 20px; padding: 12px; border-radius: 15px; }
-    </style></head><body>
+    </style>
+</head>
+<body>
     <div class="app-container">
         <div class="lang-selector" translate="no">
             <button class="lang-btn active" onclick="changeLang('ko', this)">KO</button>
@@ -86,7 +90,7 @@
 
         <div id="ai-mode" class="content-section ai-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
-            <p id="ai-info" class="guide-box">따라하세요 "우리 아기. 예쁜 아기. 엄마가 항상 지켜줄게." 천천히,나긋나긋한 목소리로 말하세요</p>
+            <p id="ai-info" class="guide-box">따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게. 자장 자장 우리 아기, 이제 코오 자자." 천천히, 나긋나긋한 목소리로 말하세요</p>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
             <p id="status-text"></p>
         </div>
@@ -111,13 +115,15 @@
     </div>
 
     <audio id="audio-player" loop></audio>
-    <audio id="voice-player" loop></audio><script>
+    <audio id="voice-player" loop></audio>
+
+    <script>
     const langData = {
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
             mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
-            aiInfo: "음악을 선택하고 목소리를 녹음하면 음악 위에 엄마의 목소리가 합쳐집니다.",
+            aiInfo: '따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게. 자장 자장 우리 아기, 이제 코오 자자." 천천히, 나긋나긋한 목소리로 말하세요',
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
             bgm3t: "천사의 품속에서(AI)", bgm3d: "까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.",
@@ -138,7 +144,7 @@
             title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
             mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
-            aiInfo: "Select music and record your voice to blend Mommy's voice over the melody.",
+            aiInfo: 'Please repeat: "My sweet baby, my lovely child. Mommy will always protect you. Sleep tight, my dear, now go to sleep." Speak slowly and gently.',
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
             bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
             bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
@@ -159,15 +165,15 @@
             title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
             tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
             mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kaydı başlatın.",
-            aiInfo: "Müzik seçip sesinizi kaydedin, anne sesi müzikle birleşecektir.",
+            aiInfo: 'Lütfen tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak. Ninni ninni bebeğim, hadi uyu artık." Yavaşça ve yumuşak bir sesle konuşun.',
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
-            bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
+            bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net 및 rahatlatıcı sesler",
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
-            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik ve parlak melodiler",
+            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik 및 parlak melodiler",
             bgm5t: "Işıl Işıl Yıldız", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
-            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif ve sofistike klasik bir melodi",
+            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif 및 sofistike klasik bir melodi",
             bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
-            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar ve tatlı sesli güzel bir Türk ninnisi.",
+            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar 및 tatlı sesli güzel bir Türk ninnisi.",
             bgm9t: "E Bebeğim E", bgm9d: "Huzur içinde uyuyan bir çocuğu anlatan Türk ninnisi.",
             bgm10t: "Sen Benim Bal Peteğim", bgm10d: "Çocuğu dünyanın en tatlı şeylerine benzeten bir Türk ninnisi.",
             record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
@@ -300,6 +306,7 @@
                         status.innerText = retryCount === 0 ? langData[currentLang].statusGen : 
                                            `${langData[currentLang].statusQueue} (${retryCount}/${maxRetries})`;
 
+                        // 🚀 여기에 Vercel 주소를 직접 넣으셔도 됩니다 (예: https://lullaby-six.vercel.app/api/clone)
                         const response = await fetch('/api/clone', { 
                             method: 'POST', 
                             headers: { 'x-lang': currentLang },
@@ -339,4 +346,6 @@
                 setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
             } catch (err) { alert("Mic error!"); }
         } else { mediaRecorder.stop(); }
-    }</script></body></html>
+    }</script>
+</body>
+</html>
