@@ -121,8 +121,6 @@
     <audio id="voice-player" loop></audio>
 
 <script>
-    // 기존에 있던 쓸데없는 애드몹(AdMob) 함수들은 시원하게 날렸습니다!
-
     const langData = {
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
@@ -279,7 +277,6 @@
         resetPlayButtons();
     }
 
-    // 🔥 교체된 결제 함수: 버튼을 누르면 이 함수가 가장 먼저 실행됩니다! 🔥
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
@@ -352,6 +349,31 @@
             setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
         } catch (err) { alert("에러: " + err.message); }
     }
+
+    // 🔥 [VIP 감지기] 결제 완료 꼬리표 확인 로직 추가 🔥
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPaid = urlParams.get('paid');
+
+        if (isPaid === 'true') {
+            // 1. VIP 손님이니 '목소리 복제' 탭으로 바로 이동시켜 줌
+            switchTab('ai');
+            
+            // 2. 주소창에 묻은 지저분한 꼬리표(?paid=true) 깔끔하게 지워주기
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // 3. 0.5초 뒤에 진짜 녹음기(startRealRecording) 자동 실행!
+            setTimeout(() => {
+                alert("결제가 완료되었습니다! 10초간 녹음을 시작합니다.");
+                startRealRecording();
+            }, 500);
+
+        } else if (isPaid === 'false') {
+            // 결제 실패해서 돌아온 경우
+            alert("결제에 실패했거나 취소되었습니다.");
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
 </script>
 </body>
 </html>
