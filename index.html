@@ -9,92 +9,76 @@
         :root { --primary: #6c5ce7; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #ff7675; }
         body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; padding-bottom: 50px; }
-        
         .lang-selector { display: flex; justify-content: flex-end; padding: 15px 20px 0; gap: 8px; }
         .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #64748b; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
         .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
         header { padding: 30px 20px; text-align: center; }
         h1 { margin: 0; font-size: 1.8rem; font-weight: 800; color: #a29bfe; letter-spacing: -1px; }
         header p { color: #94a3b8; margin-top: 10px; font-size: 0.9rem; }
-
         .tabs { display: flex; margin: 0 20px 20px; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 5px; }
         .tab-btn { flex: 1; padding: 14px; border: none; background: none; color: #64748b; cursor: pointer; transition: 0.3s; font-weight: bold; border-radius: 15px; }
         .tab-btn.active { background: var(--primary); color: white; }
-
         .content-section { display: none; padding: 0 20px; }
         .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .track-list { max-height: 420px; overflow-y: auto; padding-right: 5px; }
         .track-list::-webkit-scrollbar { width: 4px; }
         .track-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-
         .track-card { background: var(--card); padding: 16px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
         .track-info h3 { margin: 0 0 4px 0; font-size: 1rem; color: #e2e8f0; }
         .track-info p { margin: 0; font-size: 0.75rem; color: #94a3b8; line-height: 1.3; }
         .play-btn { background: #00b894; color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; flex-shrink: 0; }
-
         .common-controls { padding: 0 20px; margin-top: 20px; }
         .premium-panel { background: var(--card); padding: 20px; border-radius: 24px; margin-bottom: 15px; border: 1px solid rgba(108, 92, 231, 0.2); }
         .panel-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 15px; color: #a29bfe; display: flex; align-items: center; gap: 8px; }
-        
         .slider-group { margin-bottom: 15px; }
         .slider-group label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; }
         input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
-
         .timer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
         .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
-
         .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
-        
         #status-text { margin-top: 15px; font-size: 0.95rem; color: #a29bfe; text-align: center; min-height: 1.5rem; font-weight: bold; }
         .guide-box { background: rgba(108, 92, 231, 0.1); border: 1px dashed rgba(108, 92, 231, 0.3); color: #a29bfe; font-size: 0.8rem; line-height: 1.5; text-align: center; margin-bottom: 20px; padding: 12px; border-radius: 15px; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <div class="lang-selector" translate="no">
+        <div class="lang-selector">
             <button class="lang-btn active" onclick="changeLang('ko', this)">KO</button>
             <button class="lang-btn" onclick="changeLang('en', this)">EN</button>
             <button class="lang-btn" onclick="changeLang('tr', this)">TR</button>
         </div>
-
         <header>
             <h1 id="main-title">🌙 엄마 품 자장가</h1>
             <p id="sub-title">오늘도 우리 아이, 꿀잠 잘 시간</p>
         </header>
-
         <div class="tabs">
             <button class="tab-btn active" id="tab-1" onclick="switchTab('basic')">🎵 테마 음악</button>
             <button class="tab-btn" id="tab-2" onclick="switchTab('ai')">🎙️ 목소리 복제</button>
         </div>
-
         <div id="basic-mode" class="content-section active">
-            <p id="main-info" class="guide-box">원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.</p>
-            <div class="track-list">
+            <p id="main-info" class="guide-box">음악을 고르고 목소리를 녹음해보세요.</p>
+            <div class="track-list" id="track-list-container">
                 <div class="track-card"><div class="track-info"><h3 id="bgm1-t">따뜻한 별빛 오르골</h3><p id="bgm1-d">마음을 진정시키는 잔잔한 멜로디</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm1.mp3')">▶</button></div>
                 <div class="track-card"><div class="track-info"><h3 id="bgm2-t">태엽 인형의 꿈</h3><p id="bgm2-d">포근한 안도감을 주는 맑은 오르골</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm2.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm3-t">천사의 품속에서(AI)</h3><p id="bgm3-d">까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm3-t">천사의 품속에서(AI)</h3><p id="bgm3-d">포근한 안도감을 주는 기타 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm3.mp3')">▶</button></div>
                 <div class="track-card"><div class="track-info"><h3 id="bgm4-t">반짝반짝 별빛 꿈결</h3><p id="bgm4-d">영롱하고 신비로운 멜로디</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm4.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm5-t">별빛이 지켜주는 밤(AI)</h3><p id="bgm5-d">다정한 목소리가 아기의 마음을 안심시켜 줍니다.</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm5.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm6-t">바이스바흐 자장가</h3><p id="bgm6-d">우아하고 품격 있는 클래식 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm6.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm7-t">어머니의 기도(AI)</h3><p id="bgm7-d">아기가 두려움 없이 평온한 잠자리에 들 수 있도록 도와주는 터키의 자장가.</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm7.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm8-t">안심하고 꿈나라로(AI)</h3><p id="bgm8-d">다정한 약속이 담긴 터키의 자장가</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm9-t">나의 작은 달빛에게(AI)</h3><p id="bgm9-d">부모의 깊은 사랑을 부드러운 터키어 선율에 담았습니다</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm9.mp3')">▶</button></div>
-                <div class="track-card"><div class="track-info"><h3 id="bgm10-t">나의 달콤한 꿀단지, 작은 천사를 위한 노래</h3><p id="bgm10-d">사랑하는 아이를 세상에서 가장 달콤한 것들에 비유한 아름다운 터키 자장가입니다</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm10.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm5-t">별빛이 지켜주는 밤(AI)</h3><p id="bgm5-d">다정한 목소리가 아기를 안심시켜 줍니다.</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm5.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm6-t">바이스바흐 자장가</h3><p id="bgm6-d">우아한 클래식 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm6.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm7-t">어머니의 기도(AI)</h3><p id="bgm7-d">터키의 전통적인 자장가 선율</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm7.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm8-t">안심하고 꿈나라로(AI)</h3><p id="bgm8-d">사랑하는 아이를 위한 노래</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm8.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm9-t">나의 작은 달빛에게(AI)</h3><p id="bgm9-d">달콤한 꿈을 위한 노래</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm9.mp3')">▶</button></div>
+                <div class="track-card"><div class="track-info"><h3 id="bgm10-t">나의 달콤한 꿀단지</h3><p id="bgm10-d">세상에서 가장 소중한 너를 위해</p></div><button class="play-btn" onclick="togglePlay(this, 'bgm10.mp3')">▶</button></div>
             </div>
         </div>
-
-        <div id="ai-mode" class="content-section ai-section">
+        <div id="ai-mode" class="content-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
-            <p id="ai-info" class="guide-box">따라하세요 "우리 아기. 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요</p>
+            <p id="ai-info" class="guide-box">따라하세요 "우리 아기. 예쁜 아기. 엄마가 항상 지켜줄게." 천천히,나긋나긋한 목소리로 말하세요</p>
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
             <p id="status-text"></p>
         </div>
-
         <div class="common-controls">
             <button class="stop-btn" id="stopBtn" onclick="stopBothAudios()">⏹ 자장가 끄기</button>
             <div class="premium-panel">
@@ -113,7 +97,6 @@
             </div>
         </div>
     </div>
-
     <audio id="audio-player" loop></audio>
     <audio id="voice-player" loop></audio>
 
@@ -122,65 +105,65 @@
         ko: {
             title: "🌙 엄마 품 자장가", sub: "오늘도 우리 아이, 꿀잠 잘 시간",
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
-            mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
-            aiInfo: '따라하세요 "우리 아기. 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요',
+            mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요.",
+            aiInfo: '따라하세요 "우리 아기. 예쁜 아기. 엄마가 항상 지켜줄게." 천천히,나긋나긋한 목소리로 말하세요',
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
-            bgm3t: "천사의 품속에서(AI)", bgm3d: "까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.",
+            bgm3t: "천사의 품속에서(AI)", bgm3d: "포근한 안도감을 주는 기타 선율",
             bgm4t: "반짝반짝 별빛 꿈결", bgm4d: "영롱하고 신비로운 멜로디",
-            bgm5t: "별빛이 지켜주는 밤(AI)", bgm5d: "다정한 목소리가 아기의 마음을 안심시켜 줍니다.",
-            bgm6t: "바이스바흐 자장가", bgm6d: "우아하고 품격 있는 클래식 선율",
-            bgm7t: "어머니의 기도(AI)", bgm7d: "아기가 두려움 없이 평온한 잠자리에 들 수 있도록 도와주는 터키의 자장가.",
-            bgm8t: "안심하고 꿈나라로(AI)", bgm8d: "다정한 약속이 담긴 터키의 자장가",
-            bgm9t: "나의 작은 달빛에게(AI)", bgm9d: "부모의 깊은 사랑을 부드러운 터키어 선율에 담았습니다",
-            bgm10t: "나의 달콤한 꿀단지, 작은 천사를 위한 노래", bgm10d: "사랑하는 아이를 세상에서 가장 달콤한 것들에 비유한 아름다운 터키 자장가입니다",
+            bgm5t: "별빛이 지켜주는 밤(AI)", bgm5d: "다정한 목소리가 아기를 안심시켜 줍니다.",
+            bgm6t: "바이스바흐 자장가", bgm6d: "우아한 클래식 선율",
+            bgm7t: "어머니의 기도(AI)", bgm7d: "터키의 전통적인 자장가 선율",
+            bgm8t: "안심하고 꿈나라로(AI)", bgm8d: "사랑하는 아이를 위한 노래",
+            bgm9t: "나의 작은 달빛에게(AI)", bgm9d: "달콤한 꿈을 위한 노래",
+            bgm10t: "나의 달콤한 꿀단지", bgm10d: "세상에서 가장 소중한 너를 위해",
             record: "엄마 목소리 녹음하기 (10초)", stop: "⏹ 자장가 끄기",
             mixer: "🎚️ 실시간 볼륨 믹서", vbgm: "배경 음악 볼륨 (BGM)", vvoice: "엄마 목소리 볼륨 (Voice)",
             timer: "⏲️ 취침 타이머", t10: "10분", t30: "30분", t60: "60분",
-            tMsg: "분 뒤 자동 종료 설정", statusRec: "🔴 녹음 중...", statusGen: "⏳ 생성 중...",
-            statusQueue: "⏳ 접속자가 많아 대기 중... "
+            tMsg: "분 뒤 자동 종료", statusRec: "🔴 녹음 중...", statusGen: "⏳ 생성 중...",
+            statusQueue: "⏳ 서버 대기 중... "
         },
         en: {
-            title: "🌙 Mommy's Lullaby", sub: "Time for your baby to sleep tight",
-            tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
-            mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
-            aiInfo: 'Please repeat: "My sweet baby, my lovely child. Mommy will always protect you." Speak slowly and gently.',
-            bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
-            bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
-            bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
-            bgm4t: "Twinkling Starry Dreams", bgm4d: "Mystical and bright melodies",
-            bgm5t: "Twinkle Twinkle Little Star", bgm5d: "A world-famous melody that lights up the sky",
-            bgm6t: "Weisbach Lullaby", bgm6d: "An elegant and sophisticated classical melody",
-            bgm7t: "Dandini Dandini", bgm7d: "The most beloved Turkish traditional lullaby",
-            bgm8t: "Song for the Beloved Child", bgm8d: "A beautiful Turkish lullaby with soft guitar and sweet voice.",
-            bgm9t: "Song for the Sleeping Angel", bgm9d: "A Turkish national lullaby singing of a peacefully sleeping child.",
-            bgm10t: "My Sweet Honeycomb", bgm10d: "A Turkish lullaby comparing a child to the sweetest things in the world.",
-            record: "Record Mommy's Voice (10s)", stop: "⏹ Stop Lullaby",
-            mixer: "🎚️ Live Mixer", vbgm: "BGM Volume", vvoice: "Voice Volume",
-            timer: "⏲️ Sleep Timer", t10: "10m", t30: "30m", t60: "60m",
-            tMsg: "m until auto-stop", statusRec: "🔴 Recording...", statusGen: "⏳ Generating...",
-            statusQueue: "⏳ Server busy, waiting in queue... "
+            title: "🌙 Mommy's Lullaby", sub: "Time to sleep tight",
+            tab1: "🎵 Themes", tab2: "🎙️ Clone Voice",
+            mainInfo: "Select music and record your voice in the next tab.",
+            aiInfo: 'Repeat: "My sweet baby, my lovely child. Mommy will always protect you." Speak slowly and gently.',
+            bgm1t: "Warm Starlight Box", bgm1d: "Calming melodies",
+            bgm2t: "Clockwork Doll's Dream", bgm2d: "Comforting box sounds",
+            bgm3t: "Acoustic Forest", bgm3d: "Warm guitar sounds",
+            bgm4t: "Twinkling Dreams", bgm4d: "Mystical starry night",
+            bgm5t: "Starry Night(AI)", bgm5d: "Safe and sound melodies",
+            bgm6t: "Classic Lullaby", bgm6d: "Elegant classical sounds",
+            bgm7t: "Mother's Prayer(AI)", bgm7d: "Turkish traditional lullaby",
+            bgm8t: "Safe to Dream(AI)", bgm8d: "Song for the beloved",
+            bgm9t: "Little Moonlight(AI)", bgm9d: "Sweet dreams for you",
+            bgm10t: "My Honeycomb(AI)", bgm10d: "The sweetest song",
+            record: "Record Mommy's Voice (10s)", stop: "⏹ Stop",
+            mixer: "🎚️ Live Mixer", vbgm: "BGM Vol", vvoice: "Voice Vol",
+            timer: "⏲️ Timer", t10: "10m", t30: "30m", t60: "60m",
+            tMsg: "m until stop", statusRec: "🔴 Recording...", statusGen: "⏳ Generating...",
+            statusQueue: "⏳ Waiting in queue... "
         },
         tr: {
-            title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
-            tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
-            mainInfo: "Müziği seç인, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kaydı başlatın.",
-            aiInfo: 'Lütfen tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak." Yavaşça ve yumuşak bir sesle konuşun.',
-            bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici 및 nazik melodiler",
-            bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net 및 rahatlatıcı sesler",
-            bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
-            bgm4t: "Pırıl Pırıl Yıldızlı Düşler", bgm4d: "Mistik 및 parlak melodiler",
-            bgm5t: "Işıl Işıl Yıld즈", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
-            bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif 및 sofistike klasik 한 melodi",
-            bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
-            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar 및 tatlı sesli güzel bir Türk ninnisi.",
-            bgm9t: "E Bebeğim E", bgm9d: "Huzur içinde uyuyan bir çocuğu anlatan Türk ninnisi.",
-            bgm10t: "Sen Benim Bal Peteğim", bgm10d: "Çocuğu dünyanın en tatlı şeylerine benzeten bir Türk ninnisi.",
-            record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
-            mixer: "🎚️ Canlı Karıştırıcı", vbgm: "BGM Ses Seviyesi", vvoice: "Ses Seviyesi",
-            timer: "⏲️ Uyku Zamanlayıcısı", t10: "10dk", t30: "30dk", t60: "60dk",
-            tMsg: "dk sonra kapanacak", statusRec: "🔴 Kaydediliyor...", statusGen: "⏳ Oluşturuluyor...",
-            statusQueue: "⏳ Sunucu yoğun, sırada bekleniyor... "
+            title: "🌙 Anne Kucağı", sub: "Uyku vakti geldi",
+            tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonla",
+            mainInfo: "Müzik seçin ve sesinizi kaydedin.",
+            aiInfo: 'Tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak." Yavaşça ve yumuşak konuşun.',
+            bgm1t: "Yıldız Işığı", bgm1d: "Sakinleştirici melodi",
+            bgm2t: "Bebeğin Rüyası", bgm2d: "Rahatlatıcı sesler",
+            bgm3t: "Akustik Orman", bgm3d: "Sıcak gitar sesi",
+            bgm4t: "Yıldızlı Düşler", bgm4d: "Mistik melodiler",
+            bgm5t: "Yıldızlı Gece(AI)", bgm5d: "Huzurlu ninniler",
+            bgm6t: "Klasik Ninni", bgm6d: "Zarif klasik melodi",
+            bgm7t: "Annenin Duası(AI)", bgm7d: "Geleneksel ninni",
+            bgm8t: "Mışıl Mışıl(AI)", bgm8d: "En sevilen şarkı",
+            bgm9t: "Küçük Ay Işığı(AI)", bgm9d: "Tatlı rüyalar",
+            bgm10t: "Bal Peteğim(AI)", bgm10d: "En tatlı ninni",
+            record: "Sesini Kaydet (10sn)", stop: "⏹ Durdur",
+            mixer: "🎚️ Karıştırıcı", vbgm: "BGM Ses", vvoice: "Ses Düzeyi",
+            timer: "⏲️ Zamanlayıcı", t10: "10dk", t30: "30dk", t60: "60dk",
+            tMsg: "dk sonra duracak", statusRec: "🔴 Kayıt...", statusGen: "⏳ Oluşturuluyor...",
+            statusQueue: "⏳ Sırada bekleniyor... "
         }
     };
 
@@ -188,6 +171,7 @@
     let selectedBgmSrc = 'bgm1.mp3';
     let timerId = null;
     let currentBtn = null;
+    let isRecording = false; // 녹음 상태 관리 변수 추가
 
     function changeLang(lang, btn) {
         currentLang = lang;
@@ -199,12 +183,12 @@
         document.getElementById('main-info').innerText = d.mainInfo;
         document.getElementById('ai-info').innerText = d.aiInfo;
         for(let i = 1; i <= 10; i++) {
-            const titleEl = document.getElementById(`bgm${i}-t`);
-            const descEl = document.getElementById(`bgm${i}-d`);
-            if(titleEl) titleEl.innerText = d[`bgm${i}t`];
-            if(descEl) descEl.innerText = d[`bgm${i}d`];
+            const t = document.getElementById(`bgm${i}-t`);
+            const de = document.getElementById(`bgm${i}-d`);
+            if(t) t.innerText = d[`bgm${i}t`];
+            if(de) de.innerText = d[`bgm${i}d`];
         }
-        document.getElementById('recordBtn').innerText = d.record;
+        document.getElementById('recordBtn').innerText = isRecording ? "🛑 STOP" : d.record;
         document.getElementById('stopBtn').innerText = d.stop;
         document.getElementById('mixer-title').innerText = d.mixer;
         document.getElementById('vol-bgm-label').innerText = d.vbgm;
@@ -286,65 +270,60 @@
         const bgmPlayer = document.getElementById('audio-player'); 
         const voicePlayer = document.getElementById('voice-player'); 
 
-        if (btn.innerText.includes(langData[currentLang].record.split(' ')[0])) {
+        // 버튼 텍스트가 아니라 isRecording 변수로 상태를 체크합니다 (더 안전함)
+        if (!isRecording) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 stopBothAudios(); 
-                mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                 
+                mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
                 mediaRecorder.onstop = async () => {
+                    isRecording = false;
                     btn.disabled = true;
+                    btn.innerText = langData[currentLang].record;
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     
                     let success = false;
-                    let retryCount = 0;
-                    const maxRetries = 5;
-
-                    while (!success && retryCount < maxRetries) {
-                        status.innerText = retryCount === 0 ? langData[currentLang].statusGen : 
-                                           `${langData[currentLang].statusQueue} (${retryCount}/${maxRetries})`;
-
-                        const response = await fetch('/api/clone', { 
-                            method: 'POST', 
-                            headers: { 'x-lang': currentLang },
-                            body: audioBlob 
-                        });
-
-                        if (response.ok) {
-                            const resBlob = await response.blob();
-                            voicePlayer.src = URL.createObjectURL(resBlob);
-                            bgmPlayer.src = selectedBgmSrc; 
-                            bgmPlayer.volume = document.getElementById('bgmVol').value;
-                            voicePlayer.volume = document.getElementById('voiceVol').value;
-                            bgmPlayer.play();
-                            voicePlayer.play();
-                            status.innerText = "✨";
-                            document.getElementById('stopBtn').style.display = 'block'; 
-                            success = true;
-                        } else if (response.status === 429) {
-                            retryCount++;
-                            await new Promise(res => setTimeout(res, 3000));
-                        } else {
-                            status.innerText = "❌ Error";
-                            break;
-                        }
-                    }
-
-                    if (!success && retryCount >= maxRetries) {
-                        status.innerText = currentLang === 'ko' ? "접속자가 너무 많습니다. 잠시 후 시도해주세요." : "Server busy. Please try again later.";
+                    let retry = 0;
+                    while (!success && retry < 5) {
+                        status.innerText = retry === 0 ? langData[currentLang].statusGen : `${langData[currentLang].statusQueue} (${retry}/5)`;
+                        try {
+                            const res = await fetch('/api/clone', { 
+                                method: 'POST', 
+                                headers: { 'x-lang': currentLang },
+                                body: audioBlob 
+                            });
+                            if (res.ok) {
+                                const b = await res.blob();
+                                voicePlayer.src = URL.createObjectURL(b);
+                                bgmPlayer.src = selectedBgmSrc; 
+                                bgmPlayer.play();
+                                voicePlayer.play();
+                                status.innerText = "✨ 완료";
+                                document.getElementById('stopBtn').style.display = 'block'; 
+                                success = true;
+                            } else if (res.status === 429) {
+                                retry++; await new Promise(r => setTimeout(r, 3000));
+                            } else {
+                                status.innerText = "❌ 서버 에러"; break;
+                            }
+                        } catch(e) { status.innerText = "❌ 연결 에러"; break; }
                     }
                     btn.disabled = false;
-                    btn.innerText = langData[currentLang].record;
                 };
 
                 mediaRecorder.start();
+                isRecording = true;
                 btn.innerText = "🛑 STOP";
                 status.innerText = langData[currentLang].statusRec;
-                setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); }, 10000);
-            } catch (err) { alert("Mic error!"); }
-        } else { mediaRecorder.stop(); }
+                // 10초 후 자동 정지
+                setTimeout(() => { if(isRecording) mediaRecorder.stop(); }, 10000);
+            } catch (err) { alert("마이크 권한이 필요합니다."); }
+        } else {
+            mediaRecorder.stop();
+        }
     }</script>
 </body>
 </html>
