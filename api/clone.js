@@ -4,7 +4,6 @@ export const config = { api: { bodyParser: false } };
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
 export default async function handler(req, res) {
-  // 1. CORS 및 헤더 설정
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-lang');
@@ -21,13 +20,11 @@ export default async function handler(req, res) {
   };
 
   try {
-    // 2. 오디오 데이터 수신
     const chunks = [];
     for await (const chunk of req) { chunks.push(chunk); }
     const audioBuffer = Buffer.concat(chunks);
     const base64Audio = `data:application/octet-stream;base64,${audioBuffer.toString('base64')}`;
 
-    // 3. Replicate API 호출 (표준 주소로 복구)
     const startResponse = await fetch("https://api.replicate.com/v1/predictions", {
       method: "POST",
       headers: {
@@ -35,8 +32,8 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // XTTS-v2 공식 버전 해시
-        version: "6b16e4549f64923e38712a6f20b3272d1748f21908dfdf649e4d580f4f727690",
+        // 🚀 [수정 완료] 캡처 화면에 나온 최신 버전 번호로 교체했습니다!
+        version: "684bc3855b37866c0c65add2ff39c78f3dea3f4ff103a436465326e0f438d55e", 
         input: {
           text: lullabyTexts[lang],
           language: lang,
@@ -49,14 +46,13 @@ export default async function handler(req, res) {
     const prediction = await startResponse.json();
     
     if (!prediction.id) {
-      console.error("🚨 Replicate 에러 로그:", JSON.stringify(prediction));
-      throw new Error(`AI 호출 실패: ${prediction.detail || "권한 또는 결제 확인 필요"}`);
+      console.error("AI 서버 응답:", JSON.stringify(prediction));
+      throw new Error(`AI 호출 실패: ${prediction.detail || "권한 또는 버전 문제"}`);
     }
 
     const predictionId = prediction.id;
     let currentPrediction = prediction;
 
-    // 4. 생성 완료 대기 (Polling)
     let retryCount = 0;
     while (currentPrediction.status !== "succeeded" && currentPrediction.status !== "failed" && retryCount < 40) {
       await sleep(1500); 
@@ -69,7 +65,6 @@ export default async function handler(req, res) {
 
     if (currentPrediction.status === "failed") throw new Error("AI 생성 실패: " + JSON.stringify(currentPrediction.error));
 
-    // 5. 결과 파일 가져오기 및 전송
     const audioRes = await fetch(currentPrediction.output);
     const resultBuffer = await audioRes.arrayBuffer();
 
