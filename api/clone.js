@@ -13,7 +13,6 @@ export default async function handler(req, res) {
   const replicateToken = process.env.REPLICATE_API_TOKEN;
   const lang = req.headers['x-lang'] || 'ko';
 
-  // 1. "음" 소리 제거! 텍스트는 아주 깨끗하게 유지합니다.
   const lullabyTexts = {
     ko: "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게. 자장 자장 우리 아기, 이제 코오 자자.",
     en: "My sweet baby, my lovely child. Mommy will always protect you. Sleep tight, my dear, now go to sleep.",
@@ -38,7 +37,7 @@ export default async function handler(req, res) {
           text: lullabyTexts[lang],
           language: lang,
           speaker: base64Audio,
-          speed: 0.88, // 나긋나긋한 속도
+          speed: 0.88,
           cleanup_voice: false 
         }
       })
@@ -61,12 +60,28 @@ export default async function handler(req, res) {
     }
 
     const audioRes = await fetch(currentPrediction.output);
-    const resultBuffer = await audioRes.arrayBuffer();
+    let resultBuffer = Buffer.from(await audioRes.arrayBuffer());
+
+    // 🚀 [여기가 핵심: 5초 정적 강제 추가]
+    // XTTS 모델의 일반적인 샘플 레이트(24kHz)를 기준으로 5초 분량의 '0' 데이터를 생성합니다.
+    const sampleRate = 24000; 
+    const silenceSeconds = 5;
+    const silenceBuffer = Buffer.alloc(sampleRate * 2 * silenceSeconds, 0); // 16-bit mono 기준
+    
+    // 원래 목소리 뒤에 무음 데이터를 붙입니다.
+    let combinedBuffer = Buffer.concat([resultBuffer, silenceBuffer]);
+
+    // WAV 파일 헤더의 크기 정보를 새 길이에 맞춰 수정합니다 (파일이 깨지지 않게 보호)
+    if (combinedBuffer.length > 44 && combinedBuffer.slice(0, 4).toString() === 'RIFF') {
+      combinedBuffer.writeUInt32LE(combinedBuffer.length - 8, 4);   // 전체 파일 크기 필드 수정
+      combinedBuffer.writeUInt32LE(combinedBuffer.length - 44, 40); // 데이터 섹션 크기 필드 수정
+    }
 
     res.setHeader('Content-Type', 'audio/wav');
-    res.send(Buffer.from(resultBuffer));
+    res.send(combinedBuffer);
 
   } catch (error) {
+    console.error("🔥 에러:", error.message);
     res.status(500).json({ error: error.message });
   }
 }
