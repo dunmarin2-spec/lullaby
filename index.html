@@ -49,11 +49,11 @@
         .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
         .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
 
-        /* 🔥 쿠폰 입력창 스타일 (가려지지 않게 수정) */
+        /* 🔥 쿠폰 입력창 스타일 */
         .promo-input { 
             width: 100%; 
             background: rgba(255,255,255,0.05); 
-            border: 2px solid rgba(255,255,255,0.2); /* 테두리 조금 더 진하게 */
+            border: 2px solid rgba(255,255,255,0.2); 
             color: white; 
             padding: 16px; 
             border-radius: 20px; 
@@ -63,7 +63,7 @@
             outline: none; 
             box-sizing: border-box; 
             transition: 0.3s; 
-            display: block; /* 명시적으로 블록 요소로 지정 */
+            display: block; 
         }
         .promo-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
@@ -302,13 +302,20 @@
         resetPlayButtons();
     }
 
-    // 🔥 업그레이드된 handleRecord: 쿠폰 체크 로직 추가 🔥
+    // 🔥 완벽해진 handleRecord: 녹음 정지 선처리 + 쿠폰 초기화 로직 추가 🔥
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
+
+        // 🚨 1. 녹음 중일 때 버튼을 누른 경우 가장 먼저 처리! (쿠폰 재검사 방지)
+        if (isRecording) {
+            if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
+            return; // 여기서 멈추고 밑의 쿠폰 로직은 아예 실행 안 함
+        }
+
         const promoInput = document.getElementById('promoCode').value.trim();
 
-        // 🎁 1. 쿠폰 번호가 입력되었다면? (선착순 이벤트 당첨자)
+        // 🎁 2. 쿠폰 번호가 입력되었다면? (선착순 이벤트 당첨자)
         if (promoInput !== "") {
             status.innerText = "쿠폰 확인 중...";
             try {
@@ -318,7 +325,6 @@
                     body: JSON.stringify({ code: promoInput })
                 });
                 
-                // HTTP 상태 코드가 200번대가 아니면 에러 처리
                 if (!res.ok) {
                      const errorData = await res.json();
                      throw new Error(errorData.message || "쿠폰 확인 실패");
@@ -328,6 +334,7 @@
 
                 if (result.success) {
                     alert("✨ 선착순 이벤트 당첨! 1회 무료 체험권을 사용합니다.");
+                    document.getElementById('promoCode').value = ''; // 💡 핵심: 통과했으면 바로 빈칸으로 비워버리기!
                     startRealRecording(); // 💰 결제 없이 바로 녹음 시작!
                     return;
                 } else {
@@ -342,33 +349,29 @@
             }
         }
 
-        // 💳 2. 쿠폰이 없으면 기존 결제 로직 실행
-        if (!isRecording) {
-            try {
-                const tossPayments = TossPayments("test_ck_PBal2vxj814WAjp121gkr5RQgOAN"); 
-                
-                status.innerText = "결제창을 불러오는 중...";
-                btn.disabled = true;
+        // 💳 3. 쿠폰이 없으면 기존 결제 로직 실행
+        try {
+            const tossPayments = TossPayments("test_ck_PBal2vxj814WAjp121gkr5RQgOAN"); 
+            
+            status.innerText = "결제창을 불러오는 중...";
+            btn.disabled = true;
 
-                await tossPayments.requestPayment('카드', {
-                    amount: 1000, 
-                    orderId: 'ORDER_' + new Date().getTime(), 
-                    orderName: '엄마 품 자장가 1회 이용권',
-                    successUrl: window.location.origin + '/api/payment/success', 
-                    failUrl: window.location.origin + '/', 
-                });
-                return; 
-            } catch (e) {
-                btn.disabled = false;
-                if (e.code === 'USER_CANCEL') {
-                    status.innerText = "결제를 취소하셨습니다.";
-                } else {
-                    status.innerText = "결제 에러: " + e.message;
-                }
-                return;
+            await tossPayments.requestPayment('카드', {
+                amount: 1000, 
+                orderId: 'ORDER_' + new Date().getTime(), 
+                orderName: '엄마 품 자장가 1회 이용권',
+                successUrl: window.location.origin + '/api/payment/success', 
+                failUrl: window.location.origin + '/', 
+            });
+            return; 
+        } catch (e) {
+            btn.disabled = false;
+            if (e.code === 'USER_CANCEL') {
+                status.innerText = "결제를 취소하셨습니다.";
+            } else {
+                status.innerText = "결제 에러: " + e.message;
             }
-        } else { 
-            if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); 
+            return;
         }
     }
 
