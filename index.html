@@ -49,9 +49,23 @@
         .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
         .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
 
-        /* 🎁 쿠폰 입력창 스타일 추가 */
-        .promo-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 15px; border-radius: 20px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline: none; box-sizing: border-box; transition: 0.3s; }
-        .promo-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        /* 🔥 쿠폰 입력창 스타일 (가려지지 않게 수정) */
+        .promo-input { 
+            width: 100%; 
+            background: rgba(255,255,255,0.05); 
+            border: 2px solid rgba(255,255,255,0.2); /* 테두리 조금 더 진하게 */
+            color: white; 
+            padding: 16px; 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 1.05rem; 
+            outline: none; 
+            box-sizing: border-box; 
+            transition: 0.3s; 
+            display: block; /* 명시적으로 블록 요소로 지정 */
+        }
+        .promo-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
 
         .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
         .record-btn:disabled { background: #4b5563; box-shadow: none; cursor: not-allowed; }
@@ -134,7 +148,7 @@
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
             mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
             aiInfo: '따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요',
-            promoPlaceholder: "쿠폰 번호를 입력하세요", // 추가
+            promoPlaceholder: "쿠폰 번호를 입력하세요",
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
             bgm3t: "천사의 품속에서(AI)", bgm3d: "까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.",
@@ -156,7 +170,7 @@
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
             mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
             aiInfo: 'Please repeat: "My sweet baby, my lovely child. Mommy will always protect you." Speak slowly and gently.',
-            promoPlaceholder: "Enter coupon code", // 추가
+            promoPlaceholder: "Enter coupon code",
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
             bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
             bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
@@ -178,7 +192,7 @@
             tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
             mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kay드를 시작하십시오.",
             aiInfo: 'Lütfen tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak." Yavaşça ve yumuşak bir sesle konuşun.',
-            promoPlaceholder: "Kupon kodunu girin", // 추가
+            promoPlaceholder: "Kupon kodunu girin",
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
             bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
@@ -214,7 +228,7 @@
         document.getElementById('tab-2').innerText = d.tab2;
         document.getElementById('main-info').innerText = d.mainInfo;
         document.getElementById('ai-info').innerText = d.aiInfo;
-        document.getElementById('promoCode').placeholder = d.promoPlaceholder; // 추가
+        document.getElementById('promoCode').placeholder = d.promoPlaceholder;
         for(let i = 1; i <= 10; i++) {
             const titleEl = document.getElementById(`bgm${i}-t`);
             const descEl = document.getElementById(`bgm${i}-d`);
@@ -303,6 +317,13 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ code: promoInput })
                 });
+                
+                // HTTP 상태 코드가 200번대가 아니면 에러 처리
+                if (!res.ok) {
+                     const errorData = await res.json();
+                     throw new Error(errorData.message || "쿠폰 확인 실패");
+                }
+                
                 const result = await res.json();
 
                 if (result.success) {
@@ -315,7 +336,8 @@
                     return;
                 }
             } catch (e) {
-                alert("서버 통신 에러가 발생했습니다.");
+                alert("쿠폰 에러: " + e.message);
+                status.innerText = "";
                 return;
             }
         }
