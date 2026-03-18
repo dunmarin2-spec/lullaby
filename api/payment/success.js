@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   // 2. [범인 검거] 형님의 진짜 시크릿 키 (대문자 K 확인 완료)
   // 뒤에 콜론(:)을 붙여서 암호화해야 하는 토스 규칙을 코드로 구현했습니다.
-  const secretKey = "test_sk_XZYkKL4MrjB9YXXN2XkBr0zJwIEW";
+  const secretKey = "test_sk_XZYkKL4MrjB9YXXN2XkBr0zJwlEW";
   
   // 3. 토스 표준 인증 토큰 생성 (SecretKey: 를 Base64로 변환)
   const basicToken = Buffer.from(secretKey + ":", "utf-8").toString("base64");
