@@ -49,6 +49,10 @@
         .timer-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; padding: 10px; border-radius: 12px; font-size: 0.8rem; cursor: pointer; }
         .timer-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 118, 117, 0.05); }
 
+        /* 🎁 쿠폰 입력창 스타일 추가 */
+        .promo-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 15px; border-radius: 20px; margin-bottom: 15px; text-align: center; font-size: 1rem; outline: none; box-sizing: border-box; transition: 0.3s; }
+        .promo-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); }
+
         .record-btn { background: var(--accent); color: white; border: none; padding: 18px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 8px 20px rgba(255, 118, 117, 0.3); }
         .record-btn:disabled { background: #4b5563; box-shadow: none; cursor: not-allowed; }
         .stop-btn { background: #475569; color: white; border: none; padding: 16px; border-radius: 20px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; display: none; }
@@ -94,6 +98,9 @@
         <div id="ai-mode" class="content-section ai-section">
             <div style="font-size: 3rem; margin-bottom: 10px; text-align: center;">🌌</div>
             <p id="ai-info" class="guide-box">따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요</p>
+            
+            <input type="text" id="promoCode" class="promo-input" placeholder="쿠폰 번호를 입력하세요">
+            
             <button class="record-btn" id="recordBtn" onclick="handleRecord()">엄마 목소리 녹음하기 (10초)</button>
             <p id="status-text"></p>
         </div>
@@ -127,6 +134,7 @@
             tab1: "🎵 테마 음악", tab2: "🎙️ 목소리 복제",
             mainInfo: "원하는 음악을 선택한 뒤, '목소리 복제' 탭에서 엄마 목소리를 녹음해 보세요. 음악과 목소리가 아름답게 합쳐집니다.",
             aiInfo: '따라하세요 "우리 아기 예쁜 아기. 엄마가 항상 지켜줄게." 천천히, 나긋나긋한 목소리로 말하세요',
+            promoPlaceholder: "쿠폰 번호를 입력하세요", // 추가
             bgm1t: "따뜻한 별빛 오르골", bgm1d: "마음을 진정시키는 잔잔한 멜로디",
             bgm2t: "태엽 인형의 꿈", bgm2d: "포근한 안도감을 주는 맑은 오르골",
             bgm3t: "천사의 품속에서(AI)", bgm3d: "까만밤, 별 하나가 내려와 우리 아기를 지켜줍니다.",
@@ -148,6 +156,7 @@
             tab1: "🎵 Themes", tab2: "🎙️ Voice Clone",
             mainInfo: "Select music, then record Mommy's voice in the 'Voice Clone' tab to blend them together beautifully.",
             aiInfo: 'Please repeat: "My sweet baby, my lovely child. Mommy will always protect you." Speak slowly and gently.',
+            promoPlaceholder: "Enter coupon code", // 추가
             bgm1t: "Warm Starlight Box", bgm1d: "Calming and gentle melodies",
             bgm2t: "Clockwork Doll's Dream", bgm2d: "Clear and comforting sounds",
             bgm3t: "Acoustic Forest Walk", bgm3d: "Warm guitar for baby",
@@ -167,8 +176,9 @@
         tr: {
             title: "🌙 Anne Kucağı Ninnisi", sub: "Bebeğiniz için mışıl mışıl uyku vakti",
             tab1: "🎵 Temalar", tab2: "🎙️ Ses Klonlama",
-            mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kaydı başlatın.",
+            mainInfo: "Müziği seçin, ardından müzikle anne sesini birleştirmek için 'Ses Klonlama' sekmesinden kay드를 시작하십시오.",
             aiInfo: 'Lütfen tekrar edin: "Canım bebeğim, tatlı yavrum. Annen seni her zaman koruyacak." Yavaşça ve yumuşak bir sesle konuşun.',
+            promoPlaceholder: "Kupon kodunu girin", // 추가
             bgm1t: "Sıcak Yıldız Işığı", bgm1d: "Sakinleştirici ve nazik melodiler",
             bgm2t: "Kurmalı Bebeğin Rüyası", bgm2d: "Net ve rahatlatıcı sesler",
             bgm3t: "Akustik Orman Yürüyüşü", bgm3d: "Bebekler için sıcak gitar",
@@ -176,7 +186,7 @@
             bgm5t: "Işıl Işıl Yıldız", bgm5d: "Gece gökyüzünü aydınlatan dünyaca ünlü bir ninni",
             bgm6t: "Weisbach Ninnisi", bgm6d: "Zarif ve sofistike klasik bir melodi",
             bgm7t: "Dandini Dandini Dastana", bgm7d: "Türk annelerinin en sevdiği geleneksel ninni",
-            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar ve tatlı sesli güzel bir Türk ninnisi.",
+            bgm8t: "Annesi Onu Çok Severmiş", bgm8d: "Yumuşak gitar 및 tatlı sesli güzel bir Türk ninnisi.",
             bgm9t: "E Bebeğim E", bgm9d: "Huzur içinde uyuyan bir çocuğu anlatan Türk ninnisi.",
             bgm10t: "Sen Benim Bal Peteğim", bgm10d: "Çocuğu dünyanın en tatlı şeylerine benzeten bir Türk ninnisi.",
             record: "Annem Sesini Kaydet (10sn)", stop: "⏹ Ninniyi Durdur",
@@ -204,6 +214,7 @@
         document.getElementById('tab-2').innerText = d.tab2;
         document.getElementById('main-info').innerText = d.mainInfo;
         document.getElementById('ai-info').innerText = d.aiInfo;
+        document.getElementById('promoCode').placeholder = d.promoPlaceholder; // 추가
         for(let i = 1; i <= 10; i++) {
             const titleEl = document.getElementById(`bgm${i}-t`);
             const descEl = document.getElementById(`bgm${i}-d`);
@@ -277,10 +288,39 @@
         resetPlayButtons();
     }
 
+    // 🔥 업그레이드된 handleRecord: 쿠폰 체크 로직 추가 🔥
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
+        const promoInput = document.getElementById('promoCode').value.trim();
 
+        // 🎁 1. 쿠폰 번호가 입력되었다면? (선착순 이벤트 당첨자)
+        if (promoInput !== "") {
+            status.innerText = "쿠폰 확인 중...";
+            try {
+                const res = await fetch('/api/coupon/use', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: promoInput })
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    alert("✨ 선착순 이벤트 당첨! 1회 무료 체험권을 사용합니다.");
+                    startRealRecording(); // 💰 결제 없이 바로 녹음 시작!
+                    return;
+                } else {
+                    alert("❌ " + result.message);
+                    status.innerText = "";
+                    return;
+                }
+            } catch (e) {
+                alert("서버 통신 에러가 발생했습니다.");
+                return;
+            }
+        }
+
+        // 💳 2. 쿠폰이 없으면 기존 결제 로직 실행
         if (!isRecording) {
             try {
                 const tossPayments = TossPayments("test_ck_PBal2vxj814WAjp121gkr5RQgOAN"); 
@@ -350,26 +390,18 @@
         } catch (err) { alert("에러: " + err.message); }
     }
 
-    // 🔥 [VIP 감지기] 결제 완료 꼬리표 확인 로직 추가 🔥
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const isPaid = urlParams.get('paid');
 
         if (isPaid === 'true') {
-            // 1. VIP 손님이니 '목소리 복제' 탭으로 바로 이동시켜 줌
             switchTab('ai');
-            
-            // 2. 주소창에 묻은 지저분한 꼬리표(?paid=true) 깔끔하게 지워주기
             window.history.replaceState({}, document.title, window.location.pathname);
-            
-            // 3. 0.5초 뒤에 진짜 녹음기(startRealRecording) 자동 실행!
             setTimeout(() => {
                 alert("결제가 완료되었습니다! 10초간 녹음을 시작합니다.");
                 startRealRecording();
             }, 500);
-
         } else if (isPaid === 'false') {
-            // 결제 실패해서 돌아온 경우
             alert("결제에 실패했거나 취소되었습니다.");
             window.history.replaceState({}, document.title, window.location.pathname);
         }
