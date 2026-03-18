@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Vercel 환경변수에 등록한 열쇠들을 자동으로 가져옵니다.
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 export default async function handler(req, res) {
@@ -10,12 +9,11 @@ export default async function handler(req, res) {
     return res.status(400).send("데이터 부족");
   }
 
-  // 🔥 형님이 직접 입력해서 뚫으셨던 그 정답 키입니다!
+  // 🔥 형님의 진짜 토스 시크릿 키
   const secretKey = "test_sk_XZYkKL4MrjB9YXXN2XkBr0zJwlEW";
   const basicToken = Buffer.from(secretKey + ":").toString("base64");
 
   try {
-    // 1. 토스 서버에 승인 요청
     const response = await fetch("https://api.tosspayments.com/v1/payments/confirm", {
       method: "POST",
       headers: {
@@ -26,7 +24,7 @@ export default async function handler(req, res) {
     });
 
     if (response.ok) {
-      // 🟢 2. [핵심] 결제 성공 시 Supabase 장부에 한 줄 기록!
+      // 🟢 Supabase 장부에 기록 시도
       const { error } = await supabase
         .from('payments')
         .insert([{ 
@@ -36,9 +34,16 @@ export default async function handler(req, res) {
           status: 'DONE' 
         }]);
 
-      if (error) console.error("장부 기록 에러:", error.message);
+      // 🚨 [에러 탐지기] 만약 수파베이스에서 막히면 화면에 이유를 띄웁니다!
+      if (error) {
+        return res.status(500).send(`
+          <h2>🚨 장부 기록 실패! (결제는 됨)</h2>
+          <p><b>에러 원인:</b> ${error.message}</p>
+          <p>이 화면을 스샷 찍어서 보여주십쇼!</p>
+        `);
+      }
 
-      // 3. 결제 완료 꼬리표 달고 홈으로 복귀!
+      // 에러가 없으면 정상적으로 앱으로 복귀
       res.redirect(302, "/?paid=true");
     } else {
       const result = await response.json();
