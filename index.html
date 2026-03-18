@@ -302,7 +302,7 @@
         resetPlayButtons();
     }
 
-    // 🔥 완벽해진 handleRecord: 녹음 정지 선처리 + 쿠폰 초기화 로직 추가 🔥
+    // 🔥 업그레이드된 handleRecord (결제 임시 차단 버전)
     async function handleRecord() {
         const btn = document.getElementById('recordBtn');
         const status = document.getElementById('status-text');
@@ -310,12 +310,12 @@
         // 🚨 1. 녹음 중일 때 버튼을 누른 경우 가장 먼저 처리! (쿠폰 재검사 방지)
         if (isRecording) {
             if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
-            return; // 여기서 멈추고 밑의 쿠폰 로직은 아예 실행 안 함
+            return; 
         }
 
         const promoInput = document.getElementById('promoCode').value.trim();
 
-        // 🎁 2. 쿠폰 번호가 입력되었다면? (선착순 이벤트 당첨자)
+        // 🎁 2. 쿠폰 번호가 입력되었다면?
         if (promoInput !== "") {
             status.innerText = "쿠폰 확인 중...";
             try {
@@ -334,8 +334,8 @@
 
                 if (result.success) {
                     alert("✨ 선착순 이벤트 당첨! 1회 무료 체험권을 사용합니다.");
-                    document.getElementById('promoCode').value = ''; // 💡 핵심: 통과했으면 바로 빈칸으로 비워버리기!
-                    startRealRecording(); // 💰 결제 없이 바로 녹음 시작!
+                    document.getElementById('promoCode').value = ''; 
+                    startRealRecording(); 
                     return;
                 } else {
                     alert("❌ " + result.message);
@@ -349,32 +349,9 @@
             }
         }
 
-        // 💳 3. 쿠폰이 없으면 기존 결제 로직 실행
-if (!isRecording) {
-            alert("🚧 현재 정식 오픈 준비 중입니다!\n진행 중인 이벤트 쿠폰 코드를 입력하셔야만 체험이 가능합니다.");
-            return;
-        }
-            
-            status.innerText = "결제창을 불러오는 중...";
-            btn.disabled = true;
-
-            await tossPayments.requestPayment('카드', {
-                amount: 1000, 
-                orderId: 'ORDER_' + new Date().getTime(), 
-                orderName: '엄마 품 자장가 1회 이용권',
-                successUrl: window.location.origin + '/api/payment/success', 
-                failUrl: window.location.origin + '/', 
-            });
-            return; 
-        } catch (e) {
-            btn.disabled = false;
-            if (e.code === 'USER_CANCEL') {
-                status.innerText = "결제를 취소하셨습니다.";
-            } else {
-                status.innerText = "결제 에러: " + e.message;
-            }
-            return;
-        }
+        // 💳 3. 쿠폰이 없으면? (결제 차단 팝업 띄우기)
+        alert("🚧 현재 정식 오픈 준비 중입니다!\n진행 중인 이벤트 쿠폰 코드를 입력하셔야만 체험이 가능합니다.");
+        return;
     }
 
     async function startRealRecording() {
