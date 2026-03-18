@@ -1,20 +1,18 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: "Method Not Allowed" });
 
-  // 🔥 Vercel 환경변수 무시! 여기에 형님 정보를 직접 따옴표 안에 넣어주십쇼.
-  // ⚠️ 주의: URL 끝에 절대 슬래시(/)를 넣지 마세요!
   const supabaseUrl = "https://wzrvdikpzwiiuesemttw.supabase.co"; 
   const supabaseKey = "sb_publishable_bfdsYRNPwAF9MfcyZF3pSg_b2tWS8YK";
 
   const { code } = req.body;
 
   try {
-    // 1. 쿠폰 확인 (GET)
+    // 1. 쿠폰 확인 (GET) - 여기 백틱(`) 적용 완료!
     const getUrl = `${supabaseUrl}/rest/v1/coupons?code=eq.${code}&is_used=eq.false&select=*`;
     const getRes = await fetch(getUrl, {
       headers: {
         'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`
+        'Authorization': `Bearer ${supabaseKey}` // 여기도 백틱(`) 적용 완료!
       }
     });
     const data = await getRes.json();
@@ -23,13 +21,13 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: "이미 사용된 코드거나 번호가 틀렸습니다." });
     }
 
-    // 2. 쿠폰 사용 처리 (PATCH)
+    // 2. 쿠폰 사용 처리 (PATCH) - 여기 백틱(`) 적용 완료!
     const patchUrl = `${supabaseUrl}/rest/v1/coupons?code=eq.${code}`;
     const patchRes = await fetch(patchUrl, {
       method: 'PATCH',
       headers: {
         'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        'Authorization': `Bearer ${supabaseKey}`, // 여기도 백틱(`) 적용 완료!
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ is_used: true })
