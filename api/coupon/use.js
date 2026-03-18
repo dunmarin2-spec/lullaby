@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   // 🔥 Vercel 환경변수 무시! 여기에 형님 정보를 직접 따옴표 안에 넣어주십쇼.
   // ⚠️ 주의: URL 끝에 절대 슬래시(/)를 넣지 마세요!
-  const supabaseUrl = "https://wzrvdikpzwiuiesemttw.supabase.co"; 
+  const supabaseUrl = "https://wzrvdikpzwiiuesemttw.supabase.co"; 
   const supabaseKey = "sb_publishable_bfdsYRNPwAF9MfcyZF3pSg_b2tWS8YK";
 
   const { code } = req.body;
